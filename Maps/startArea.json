@@ -1,0 +1,129 @@
+{
+  "layers": [
+    {
+      "name": "background",
+      "layout": [
+        [
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 3, "solid": 0, "trigger": 1, "triggerData": "Test Shop"},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 2, "solid": 0, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ],
+        [
+	  {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1},
+          {"tileType": 1, "solid": 1, "trigger": -1}
+        ]
+      ]
+    }
+  ]
+}

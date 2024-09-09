@@ -1,0 +1,7 @@
+{
+  "allMaps": [
+    {"id": 0, "name": "Start Area", "file": "startArea.json"},
+    {"id": 1, "name": "First Area", "file": "firstArea.json"},
+    {"id": 2, "name": "Second Area", "file": "secondArea.json"}
+  ]
+}
