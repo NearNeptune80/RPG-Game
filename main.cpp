@@ -13,14 +13,14 @@ const int TILE_HEIGHT = 32;
 const int TILESET_COLUMNS = 10;
 const int TILESET_ROWS = 2;
 
-
-
-
-int main(int argc, char* args[]) {
-	SDL_Window* window = NULL;
+SDL_Window* window = NULL;
 	SDL_Surface* screenSurface = NULL;
 	SDL_Renderer* renderer = NULL;
 	SDL_Surface* tileset = IMG_Load("./Images/tileset.png");
+
+
+int main(int argc, char* args[]) {
+	
 	if (tileset == NULL) {
 		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
 	}
@@ -33,10 +33,39 @@ int main(int argc, char* args[]) {
 
 	std::vector<mapData> map = readMapData("./Maps/startArea.json");
 	std::vector<tile> tiles = createTiles(map);
-	
-	
-	SDL_Delay(2000);
+	bool close = false;
+	SDL_Event e;
 
+	while (!close) {
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				close = true;
+			}
+		}
+		//Clear screen
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(renderer);
+
+		//Render red filled quad
+		SDL_Rect fillRect = { 0, 98, 390, 672 };
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+		SDL_RenderFillRect(renderer, &fillRect);
+
+		
+
+		for (int i = 14; i < 390; i += 94)
+		{
+			for (int j = 112; j <= 676; j += 94)
+			{
+				SDL_Rect tileRect = { i, j, 80, 80 };
+				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
+				SDL_RenderFillRect(renderer, &tileRect);
+			}
+		}
+		//Update screen
+		SDL_RenderPresent(renderer);
+	}
+	
 	quit(window, renderer);
 	return 0;
 }
