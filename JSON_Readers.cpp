@@ -10,7 +10,7 @@ using json = nlohmann::json;
 std::vector<mapData> readMapData(const std::string& filePath) {
     std::ifstream file(filePath);
     if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filePath << std::endl;
+        std::cerr << "Failed to open map data file: " << filePath << std::endl;
         return {};
     }
 
@@ -43,7 +43,7 @@ std::vector<mapData> readMapData(const std::string& filePath) {
 std::vector<mapInfo> readMapIndex(const std::string& filePath) {
     std::ifstream file(filePath);
     if (!file.is_open()) {
-        std::cerr << "Failed to open file: " << filePath << std::endl;
+        std::cerr << "Failed to open map index file: " << filePath << std::endl;
         return {};
     }
 
@@ -59,4 +59,33 @@ std::vector<mapInfo> readMapIndex(const std::string& filePath) {
         mapIndexList.push_back(map);
     }
     return mapIndexList;
+}
+
+std::vector<item> readItems(const std::string& filePath)
+{
+	std::ifstream file(filePath);
+    if (!file.is_open())
+    {
+		std::cerr << "Failed to open items file: " << filePath << std::endl;
+		return {};
+    }
+
+	json itemsJson;
+	file >> itemsJson;
+
+	std::vector<item> itemsList;
+    for (const auto& itemData : itemsJson["items"])
+    {
+		item newItem;
+		newItem.atk = itemData["atk"];
+		newItem.def = itemData["def"];
+		newItem.price = itemData["price"];
+		newItem.imagelocation = itemData["imageLocation"];
+		newItem.itemType = itemData["itemType"];
+		newItem.description = itemData["description"];
+		newItem.name = itemData["name"];
+		newItem.lvl = itemData["lvl"];
+		itemsList.push_back(newItem);
+    }
+    return itemsList;
 }

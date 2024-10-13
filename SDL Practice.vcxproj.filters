@@ -27,10 +27,10 @@
     <ClCompile Include="JSON_Readers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mapManager.cpp">
+    <ClCompile Include="inventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source.cpp">
+    <ClCompile Include="item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +44,10 @@
     <ClInclude Include="JSON_Readers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mapManager.h">
+    <ClInclude Include="inventory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -61,6 +64,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Maps\startArea.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="items.json">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

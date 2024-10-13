@@ -5,6 +5,8 @@
 #include "SDL_Funcs.h"
 #include "tile.h"
 #include "JSON_Readers.h"
+#include "inventory.h"
+#include "item.h"
 
 const int SCREEN_WIDTH = 1600;
 const int SCREEN_HEIGHT = 896;
@@ -14,12 +16,21 @@ const int TILESET_COLUMNS = 10;
 const int TILESET_ROWS = 2;
 
 SDL_Window* window = NULL;
-	SDL_Surface* screenSurface = NULL;
-	SDL_Renderer* renderer = NULL;
-	SDL_Surface* tileset = IMG_Load("./Images/tileset.png");
+SDL_Surface* screenSurface = NULL;
+SDL_Renderer* renderer = NULL;
+SDL_Surface* tileset = IMG_Load("./Images/tileset.png");
+TTF_Font* font = TTF_OpenFont("./Roboto/Roboto-Black.ttf", 14);
 
 
 int main(int argc, char* args[]) {
+
+	inventory playerInventory;
+	std::vector<item> itemList = readItems("./items.json");
+
+	for (int i = 0; i < itemList.size(); i++)
+	{
+		std::cout << itemList[i].name << std::endl;
+	}
 	
 	if (tileset == NULL) {
 		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
@@ -42,26 +53,11 @@ int main(int argc, char* args[]) {
 				close = true;
 			}
 		}
-		//Clear screen
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(renderer);
 
-		//Render red filled quad
-		SDL_Rect fillRect = { 0, 98, 390, 672 };
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-		SDL_RenderFillRect(renderer, &fillRect);
+		playerInventory.renderInventory(renderer);
 
-		
-
-		for (int i = 14; i < 390; i += 94)
-		{
-			for (int j = 112; j <= 676; j += 94)
-			{
-				SDL_Rect tileRect = { i, j, 80, 80 };
-				SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
-				SDL_RenderFillRect(renderer, &tileRect);
-			}
-		}
 		//Update screen
 		SDL_RenderPresent(renderer);
 	}
