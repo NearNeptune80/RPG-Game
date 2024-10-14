@@ -71,8 +71,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\C++ Libs\SDL2-2.30.5\include;C:\C++ Libs\SDL2_image-2.8.2\include;C:\C++ Libs\SDL_ttf\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\C++ Libs\SDL2-2.30.5\lib\x64;C:\C++ Libs\SDL2_image-2.8.2\lib\x64;C:\C++ Libs\SDL_ttf\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\C++ Libs\SDL2-2.30.7\include;C:\C++ Libs\SDL2_image-2.8.2\include;C:\C++ Libs\SDL_ttf\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\C++ Libs\SDL2-2.30.7\lib\x64;C:\C++ Libs\SDL2_image-2.8.2\lib\x64;C:\C++ Libs\SDL_ttf\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
