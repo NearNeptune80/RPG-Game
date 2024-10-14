@@ -22,7 +22,6 @@ SDL_Renderer* renderer = NULL;
 SDL_Surface* tileset = IMG_Load("./Images/tileset.png");
 TTF_Font* font = TTF_OpenFont("./Roboto/Roboto-Black.ttf", 14);
 
-
 int main(int argc, char* args[]) {
 
     player player1("Jack");
@@ -45,19 +44,76 @@ int main(int argc, char* args[]) {
 
 	std::vector<mapData> map = readMapData("./Maps/startArea.json");
 	std::vector<tile> tiles = createTiles(map);
+	
+	bool exitInv = true;
 	bool close = false;
+	int mouseX, mouseY;
 	SDL_Event e;
 
 	while (!close) {
+
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(renderer);
+		
+
 		while (SDL_PollEvent(&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				close = true;
 			}
+			else if (e.type == SDL_KEYDOWN)
+			{
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_w:
+					break;
+				case SDLK_s:
+					break;
+				case SDLK_a:
+					break;
+				case SDLK_d:
+					break;
+				case SDLK_TAB:
+					exitInv = !exitInv;
+					break;
+				case SDLK_e:
+					//Interacting
+					break;
+				case SDLK_q:
+					//Attacking
+					break;
+				case SDLK_SPACE:
+					//Blocking
+					break;
+				}
+			}
+			else if (e.type == SDL_MOUSEMOTION)
+			{
+				SDL_GetMouseState(&mouseX, &mouseY);
+			}
 		}
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-		SDL_RenderClear(renderer);
+		
 
-		player1.playerInventory.renderInventory(renderer);
+		player1.equipItem(itemList[0]);
+		player1.equipItem(itemList[1]);
+		player1.equipItem(itemList[3]);
+		std::cout << player1.equippedWeapon.name << std::endl;
+		std::cout << player1.equippedShield.name << std::endl;
+		std::cout << player1.equippedBoots.name << std::endl;
+		player1.equipItem(itemList[2]);
+		player1.equipItem(itemList[9]);
+		std::cout << player1.equippedWeapon.name << std::endl;
+		std::cout << player1.equippedShield.name << std::endl;
+		std::cout << player1.equippedBoots.name << std::endl;
+		player1.playerInventory.addItem(itemList[4]);
+		for (int i = 0; i < player1.playerInventory.storedItems.size(); i++)
+		{
+			std::cout << "." << player1.playerInventory.storedItems[i].name << "." << std::endl;
+		}
+		
+		if (!exitInv)
+		{
+			player1.playerInventory.renderInventory(renderer, mouseX, mouseY);
+		}
 
 		//Update screen
 		SDL_RenderPresent(renderer);

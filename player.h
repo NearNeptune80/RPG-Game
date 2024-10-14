@@ -25,7 +25,7 @@ public:
 	item equippedShield;
 	item equippedAccessory1;
 	item equippedAccessory2;
-	item emptySlot;
+	item emptySlot = item();
 
 	inventory playerInventory;
 

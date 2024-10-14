@@ -24,32 +24,84 @@ void player::equipItem(item item)
 	switch (item.itemType)
 	{
 	case 0:
-		equippedHelmet = item;
-		break;
-	case 1:
-		equippedChestplate = item;
-		break;
-	case 2:
-		equippedLeggings = item;
-		break;
-	case 3:
-		equippedBoots = item;
-		break;
-	case 4:
-		equippedWeapon = item;
-		break;
-	case 5:
-		equippedShield = item;
-		break;
-	case 6:
-		if (equippedAccessory1)
-		{eavszx'
-			hv'
-			equippedAccessory1 = item;
-		} 
+		if (equippedHelmet.name == "")
+		{
+			equippedHelmet = item;
+		}
 		else
 		{
+			unequipItem(equippedHelmet);
+			equippedHelmet = item;
+		}
+		break;
+	case 1:
+		if (equippedChestplate.name == "")
+		{
+			equippedChestplate = item;
+		}
+		else
+		{
+			unequipItem(equippedChestplate);
+			equippedChestplate = item;
+		}
+		break;
+	case 2:
+		if (equippedLeggings.name == "")
+		{
+			equippedLeggings = item;
+		}
+		else
+		{
+			unequipItem(equippedLeggings);
+			equippedLeggings = item;
+		}
+		break;
+	case 3:
+		if (equippedBoots.name == "")
+		{
+			equippedBoots = item;
+		}
+		else
+		{
+			unequipItem(equippedBoots);
+			equippedBoots = item;
+		}
+		break;
+	case 4:
+		if (equippedWeapon.name == "")
+		{
+			equippedWeapon = item;
+		}
+		else
+		{
+			unequipItem(equippedWeapon);
+			equippedWeapon = item;
+		}
+		break;
+	case 5:
+		if (equippedShield.name == "")
+		{
+			equippedShield = item;
+		}
+		else
+		{
+			unequipItem(equippedShield);
+			equippedShield = item;
+		}
+		break;
+	case 6:
+		if (equippedAccessory1.name == "")
+		{
+			equippedAccessory1 = item;
+		} 
+		else if (equippedAccessory2.name == "")
+		{
 			equippedAccessory2 = item;
+		}
+		else
+		{
+			unequipItem(equippedAccessory1);
+			equippedAccessory1 = item;
 		}
 		break;
 	default:
@@ -65,24 +117,31 @@ void player::unequipItem(item item)
 	switch (item.itemType)
 	{
 	case 0:
+		playerInventory.addItem(equippedHelmet);
 		equippedHelmet = emptySlot;
 		break;
 	case 1:
+		playerInventory.addItem(equippedChestplate);
 		equippedChestplate = emptySlot;
 		break;
 	case 2:
+		playerInventory.addItem(equippedLeggings);
 		equippedLeggings = emptySlot;
 		break;
 	case 3:
+		playerInventory.addItem(equippedBoots);
 		equippedBoots = emptySlot;
 		break;
 	case 4:
+		playerInventory.addItem(equippedWeapon);
 		equippedWeapon = emptySlot;
 		break;
 	case 5:
+		playerInventory.addItem(equippedShield);
 		equippedShield = emptySlot;
 		break;
 	case 6:
+		playerInventory.addItem(equippedAccessory1);
 		equippedAccessory1 = emptySlot;
 		break;
 	default:

@@ -1,6 +1,6 @@
 #include "item.h"
 
-item::item()
+item::item() : atk(0), def(0), price(0), itemType(-1), lvl(0)
 {
 }
 
