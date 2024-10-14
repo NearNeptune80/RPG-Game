@@ -7,6 +7,7 @@
 #include "JSON_Readers.h"
 #include "inventory.h"
 #include "item.h"
+#include "player.h"
 
 const int SCREEN_WIDTH = 1600;
 const int SCREEN_HEIGHT = 896;
@@ -24,7 +25,7 @@ TTF_Font* font = TTF_OpenFont("./Roboto/Roboto-Black.ttf", 14);
 
 int main(int argc, char* args[]) {
 
-	inventory playerInventory;
+    player player1("Jack");
 	std::vector<item> itemList = readItems("./items.json");
 
 	for (int i = 0; i < itemList.size(); i++)
@@ -56,7 +57,7 @@ int main(int argc, char* args[]) {
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(renderer);
 
-		playerInventory.renderInventory(renderer);
+		player1.playerInventory.renderInventory(renderer);
 
 		//Update screen
 		SDL_RenderPresent(renderer);

@@ -137,6 +137,7 @@
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="item.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="SDL_Funcs.cpp" />
     <ClCompile Include="JSON_Readers.cpp" />
     <ClCompile Include="tile.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="JSON_Readers.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="SDL_Funcs.h" />
     <ClInclude Include="tile.h" />
   </ItemGroup>

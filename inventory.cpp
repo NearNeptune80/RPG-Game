@@ -48,3 +48,13 @@ void inventory::renderInventory(SDL_Renderer* renderer)
 void inventory::renderDescription(SDL_Renderer* renderer)
 {
 }
+
+void inventory::addItem(item newItem)
+{
+	storedItems.push_back(newItem);
+}
+
+void inventory::removeItem(int index)
+{
+	storedItems.erase(storedItems.begin() + index);
+}
