@@ -13,11 +13,13 @@ class inventory
 	public:
 		inventory();
 		~inventory();
-		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY);
-		void renderDescription(SDL_Renderer* renderer);
+		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font);
+		void renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font);
 
 		bool addItem(item newItem);
 		void removeItem(int index);
+
+		item getItem(int mouseX, int mouseY);
 
 		std::vector<item> storedItems;
 };

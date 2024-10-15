@@ -17,6 +17,11 @@ public:
 	int totalDef;
 	int gold;
 
+	int levelPoints;
+	int atkLevel;
+	int defLevel;
+	int hpLevel;
+
 	item equippedHelmet;
 	item equippedChestplate;
 	item equippedLeggings;
@@ -33,5 +38,7 @@ public:
 	void calculateStats();
 	void equipItem(item item);
 	void unequipItem(item item);
+	void addLevelPoint(int stat);
+	int getLevelStats(int levelCat);
 };
 

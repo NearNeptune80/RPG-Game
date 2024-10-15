@@ -15,8 +15,9 @@ player::player(std::string name)
 
 void player::calculateStats()
 {
-	this->totalAtk = equippedHelmet.atk + equippedChestplate.atk + equippedLeggings.atk + equippedBoots.atk + equippedWeapon.atk + equippedShield.atk + equippedAccessory1.atk + equippedAccessory2.atk;
-	this->totalDef = equippedHelmet.def + equippedChestplate.def + equippedLeggings.def + equippedBoots.def + equippedWeapon.def + equippedShield.def + equippedAccessory1.def + equippedAccessory2.def;
+	this->totalAtk = equippedHelmet.atk + equippedChestplate.atk + equippedLeggings.atk + equippedBoots.atk + equippedWeapon.atk + equippedShield.atk + equippedAccessory1.atk + equippedAccessory2.atk + getLevelStats(0);
+	this->totalDef = equippedHelmet.def + equippedChestplate.def + equippedLeggings.def + equippedBoots.def + equippedWeapon.def + equippedShield.def + equippedAccessory1.def + equippedAccessory2.def + getLevelStats(1);
+	this->maxHp = 100 + getLevelStats(2);
 }
 
 void player::equipItem(item item)
@@ -150,4 +151,56 @@ void player::unequipItem(item item)
 	}
 
 	calculateStats();
+}
+
+void player::addLevelPoint(int stat)
+{
+	if (levelPoints > 0)
+	{
+		switch (stat)
+		{
+		case 0:
+			atkLevel++;
+			levelPoints--;
+			break;
+		case 1:
+			defLevel++;
+			levelPoints--;
+			break;
+		case 2:
+			hpLevel++;
+			levelPoints--;
+			break;
+		default:
+			std::cout << "Stat not recognized!" << std::endl;
+			break;
+		}
+	} 
+	else
+	{
+		std::cout << "No level points available!" << std::endl;
+	}
+}
+
+int player::getLevelStats(int levelCat)
+{
+	int levelTotal = 0;
+
+	switch (levelCat)
+	{
+	case 0:
+		levelTotal = atkLevel * 5;
+		break;
+	case 1:
+		levelTotal = defLevel * 5;
+		break;
+	case 2:
+		levelTotal = hpLevel * 5;
+		break;
+	default:
+		std::cout << "Stat not recognized!" << std::endl;
+		break;
+	}
+
+	return levelTotal;
 }

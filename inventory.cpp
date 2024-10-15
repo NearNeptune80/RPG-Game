@@ -10,7 +10,7 @@ inventory::~inventory()
 {
 }
 
-void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY)
+void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font)
 {
 	SDL_Rect equipmentContainer = { 0, 112, 390, 672 };
 	SDL_SetRenderDrawColor(renderer, 200, 200, 200, 0xFF);
@@ -66,6 +66,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY)
 				mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h)
 			{
 				SDL_SetRenderDrawColor(renderer, 150, 150, 150, 0xFF); // Highlight color
+				renderDescription(renderer, mouseX, mouseY, font);
 			}
 			else
 			{
@@ -76,8 +77,23 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY)
 	}
 }
 
-void inventory::renderDescription(SDL_Renderer* renderer)
+void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font)
 {
+	item descItem = getItem(mouseX, mouseY);
+	if (descItem.name != "")
+	{
+		SDL_Rect descBox = { 0, 0, 200, 200 };
+		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 0xFF);
+		SDL_RenderFillRect(renderer, &descBox);
+
+		SDL_Rect descText = { 10, 10, 180, 180 };
+		SDL_Color textColor = { 255, 255, 255 };
+		SDL_Surface* textSurface = TTF_RenderText_Solid(font, descItem.name.c_str(), textColor);
+		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+		SDL_RenderCopy(renderer, textTexture, NULL, &descText);
+		SDL_FreeSurface(textSurface);
+		SDL_DestroyTexture(textTexture);
+	}
 }
 
 bool inventory::addItem(item newItem)
@@ -97,4 +113,23 @@ bool inventory::addItem(item newItem)
 void inventory::removeItem(int index)
 {
 	storedItems.erase(storedItems.begin() + index);
+}
+
+item inventory::getItem(int mouseX, int mouseY)
+{
+	for (int i = 1224; i < 1600; i += 94)
+	{
+		for (int j = 126; j <= 690; j += 94)
+		{
+			SDL_Rect inventoryGrid = { i, j, 80, 80 };
+			int index = (j - 126) / 94 * 4 + (i - 1224) / 94;
+			if (mouseX >= inventoryGrid.x && mouseX <= inventoryGrid.x + inventoryGrid.w &&
+				mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h && storedItems.size() > index)
+			{
+				std::cout << "Item found!" << storedItems[(j - 126) / 94 * 4 + (i - 1224) / 94].name << std::endl;
+				return storedItems[(j - 126) / 94 * 4 + (i - 1224) / 94];
+			}
+		}
+	}
+	return item();
 }

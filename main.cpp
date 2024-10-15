@@ -50,6 +50,8 @@ int main(int argc, char* args[]) {
 	int mouseX, mouseY;
 	SDL_Event e;
 
+	int num = 0;
+
 	while (!close) {
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -80,6 +82,14 @@ int main(int argc, char* args[]) {
 					break;
 				case SDLK_q:
 					//Attacking
+
+					player1.playerInventory.addItem(itemList[num]);
+					num++;
+					if (num >= itemList.size())
+					{
+						num = 0;
+					}
+
 					break;
 				case SDLK_SPACE:
 					//Blocking
@@ -89,30 +99,13 @@ int main(int argc, char* args[]) {
 			else if (e.type == SDL_MOUSEMOTION)
 			{
 				SDL_GetMouseState(&mouseX, &mouseY);
+				player1.playerInventory.getItem(mouseX, mouseY);
 			}
-		}
-		
-
-		player1.equipItem(itemList[0]);
-		player1.equipItem(itemList[1]);
-		player1.equipItem(itemList[3]);
-		std::cout << player1.equippedWeapon.name << std::endl;
-		std::cout << player1.equippedShield.name << std::endl;
-		std::cout << player1.equippedBoots.name << std::endl;
-		player1.equipItem(itemList[2]);
-		player1.equipItem(itemList[9]);
-		std::cout << player1.equippedWeapon.name << std::endl;
-		std::cout << player1.equippedShield.name << std::endl;
-		std::cout << player1.equippedBoots.name << std::endl;
-		player1.playerInventory.addItem(itemList[4]);
-		for (int i = 0; i < player1.playerInventory.storedItems.size(); i++)
-		{
-			std::cout << "." << player1.playerInventory.storedItems[i].name << "." << std::endl;
 		}
 		
 		if (!exitInv)
 		{
-			player1.playerInventory.renderInventory(renderer, mouseX, mouseY);
+			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font);
 		}
 
 		//Update screen
