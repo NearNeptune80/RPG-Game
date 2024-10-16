@@ -20,9 +20,16 @@ SDL_Window* window = NULL;
 SDL_Surface* screenSurface = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Surface* tileset = IMG_Load("./Images/tileset.png");
-TTF_Font* font = TTF_OpenFont("./Roboto/Roboto-Black.ttf", 14);
+std::string fontLocation = "./Roboto/Roboto-Black.ttf";
 
 int main(int argc, char* args[]) {
+
+	if (!tileset)
+	{
+		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
+	}
+
+	
 
     player player1("Jack");
 	std::vector<item> itemList = readItems("./items.json");
@@ -39,6 +46,13 @@ int main(int argc, char* args[]) {
 	std::vector<mapInfo> mapIndex = readMapIndex("./Maps/allMaps.json");
 
 	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	TTF_Font* font = TTF_OpenFont(fontLocation.c_str(), 20);
+
+	if (!font)
+	{
+		std::cout << "Font could not be loaded! SDL_Error: " << TTF_GetError() << std::endl;
+	}
 
 	std::vector<SDL_Texture*> tileTextures = loadTileTextures(renderer, tileset, TILESET_ROWS, TILESET_COLUMNS, TILE_WIDTH, TILE_HEIGHT);
 

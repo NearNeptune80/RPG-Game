@@ -23,6 +23,10 @@ bool init(SDL_Window* &window, SDL_Surface* &screenSurface, SDL_Renderer* &rende
 				screenSurface = SDL_GetWindowSurface(window);
 				SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
 				SDL_UpdateWindowSurface(window);
+				if (TTF_Init() == -1) {
+					std::cout << "SDL_ttf could not initialize! TTF_Error: " << TTF_GetError() << std::endl;
+					return -1;
+				}
 				return true;
 			}
 		}

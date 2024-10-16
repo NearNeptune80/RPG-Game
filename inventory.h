@@ -14,7 +14,7 @@ class inventory
 		inventory();
 		~inventory();
 		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font);
-		void renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font);
+		void renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, int i, int j);
 
 		bool addItem(item newItem);
 		void removeItem(int index);

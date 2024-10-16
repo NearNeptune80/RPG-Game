@@ -66,7 +66,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 				mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h)
 			{
 				SDL_SetRenderDrawColor(renderer, 150, 150, 150, 0xFF); // Highlight color
-				renderDescription(renderer, mouseX, mouseY, font);
+				renderDescription(renderer, mouseX, mouseY, font, i, j);
 			}
 			else
 			{
@@ -77,19 +77,40 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 	}
 }
 
-void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font)
+void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, int i, int j)
 {
 	item descItem = getItem(mouseX, mouseY);
 	if (descItem.name != "")
 	{
-		SDL_Rect descBox = { 0, 0, 200, 200 };
+		SDL_Rect descBox;
+		SDL_Rect descInterior;
+
+		if (i > 800)
+		{
+			descBox = { i - 214, j, 200, 200 };
+			descInterior = { i - 204, j + 10, 180, 180 };
+		}
+		else
+		{
+			descBox = { i + 214, j, 200, 200 };
+			descInterior = { i + 224, j + 10, 180, 180 };
+		}
 		SDL_SetRenderDrawColor(renderer, 100, 100, 100, 0xFF);
 		SDL_RenderFillRect(renderer, &descBox);
+		SDL_SetRenderDrawColor(renderer, 150, 150, 150, 0xFF);
+		SDL_RenderFillRect(renderer, &descInterior);
 
-		SDL_Rect descText = { 10, 10, 180, 180 };
 		SDL_Color textColor = { 255, 255, 255 };
-		SDL_Surface* textSurface = TTF_RenderText_Solid(font, descItem.name.c_str(), textColor);
+		SDL_Surface* textSurface = TTF_RenderUTF8_Solid(font, descItem.name.c_str(), textColor);
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+		
+		SDL_Rect descText = {
+			descBox.x + (descBox.w - textSurface->w) / 2, // Center horizontally
+			descBox.y + 10, // Center vertically
+			textSurface->w,
+			textSurface->h
+		};
+
 		SDL_RenderCopy(renderer, textTexture, NULL, &descText);
 		SDL_FreeSurface(textSurface);
 		SDL_DestroyTexture(textTexture);
