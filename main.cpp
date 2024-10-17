@@ -133,11 +133,9 @@ int main(int argc, char* args[]) {
 				if (!exitInv)
 				{
 					SDL_GetMouseState(&mouseX, &mouseY);
-					std::variant<item, int> hoveredThing = player1.playerInventory.thingHovered(mouseX, mouseY);
-					if (std::holds_alternative<int>(hoveredThing))
+					if (player1.playerInventory.thingHovered(mouseX, mouseY) != -1)
 					{
-						int hoveredStat = std::get<int>(hoveredThing);
-						player1.addLevelPoint(hoveredStat);
+						player1.addLevelPoint(player1.playerInventory.thingHovered(mouseX, mouseY));
 					}
 				}
 			}
@@ -154,13 +152,9 @@ int main(int argc, char* args[]) {
 		if (!exitInv)
 		{
 			SDL_GetMouseState(&mouseX, &mouseY);
-			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font, invInfoFont, player1.playerName, player1.level);
+			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
 		}
 
-		std::cout << "Player stats: " << std::endl;
-		std::cout << player1.atkLevel << std::endl;
-		std::cout << player1.defLevel << std::endl;
-		std::cout << player1.hpLevel << std::endl;
 		//Update screen
 		SDL_RenderPresent(renderer);
 	}

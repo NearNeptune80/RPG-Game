@@ -14,7 +14,7 @@ inventory::~inventory()
 {
 }
 
-void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, TTF_Font* invInfoFont, std::string playerName, int playerLvl)
+void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, TTF_Font* invInfoFont, std::string playerName, int playerLvl, int atkLvl, int defLvl, int hpLvl)
 {
 	SDL_Rect equipmentContainer = { 0, 112, 390, 672 };
 	SDL_SetRenderDrawColor(renderer, 200, 200, 200, 0xFF);
@@ -39,8 +39,10 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 	SDL_FreeSurface(nameTextSurface);
 	SDL_DestroyTexture(nameTextTexture);
 
+	std::string levelText = "Level " + std::to_string(playerLvl);
+
 	SDL_Color lvlTextColor = { 255, 255, 255 };
-    SDL_Surface* lvlTextSurface = TTF_RenderUTF8_Solid(invInfoFont, std::to_string(playerLvl).c_str(), lvlTextColor);
+    SDL_Surface* lvlTextSurface = TTF_RenderUTF8_Solid(invInfoFont, levelText.c_str(), lvlTextColor);
 	SDL_Texture* lvlTextTexture = SDL_CreateTextureFromSurface(renderer, lvlTextSurface);
 
 	SDL_Rect lvlText = {
@@ -109,7 +111,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 		}
 	}
 
-	renderLvlUpBoxes(renderer, font, mouseX, mouseY, equipmentBoxes[3].y, equipmentBoxes[3].h);
+	renderLvlUpBoxes(renderer, font, mouseX, mouseY, equipmentBoxes[3].y, equipmentBoxes[3].h, atkLvl, defLvl, hpLvl);
 
 	// Render description after all boxes
 	for (int i = 0; i < 8; ++i)
@@ -221,14 +223,15 @@ void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY
 	}
 }
 
-void inventory::renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mouseX, int mouseY, int previousBoxY, int previousBoxH)
+void inventory::renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mouseX, int mouseY, int previousBoxY, int previousBoxH, int atkLvl, int defLvl, int hpLvl)
 {
 	int nPreviousBoxY = previousBoxY + previousBoxH;
-
+	int boxWidth = 362;
 	for (int i = 0; i < 3; i++)
 	{
 		SDL_Rect lvlUpBox = { 14, nPreviousBoxY + 35, 362, 40 };
 		SDL_Rect lvlUpIcon = { 19, nPreviousBoxY + 40, 30, 30 };
+
 		if (mouseX >= lvlUpIcon.x && mouseX <= lvlUpIcon.x + lvlUpIcon.w &&
 			mouseY >= lvlUpIcon.y && mouseY <= lvlUpIcon.y + lvlUpIcon.h)
 		{
@@ -258,6 +261,9 @@ void inventory::renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mou
 		SDL_Surface* textSurface = TTF_RenderUTF8_Solid(font, statNames[i].c_str(), textColor);
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
+		SDL_Surface* statValueSurface = TTF_RenderUTF8_Solid(font, std::to_string(i == 0 ? atkLvl : i == 1 ? defLvl : hpLvl).c_str(), textColor);
+		SDL_Texture* statValueTexture = SDL_CreateTextureFromSurface(renderer, statValueSurface);
+
 		SDL_Rect textRect = {
 			54, // Center horizontally
 			previousBoxY + 40, // Center vertically
@@ -265,22 +271,27 @@ void inventory::renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mou
 			textSurface->h + 5
 		};
 
+		SDL_Rect statValueRect = {
+			boxWidth - 20,
+			previousBoxY + 40, // Center vertically
+			statValueSurface->w + 5,
+			statValueSurface->h + 5
+		};
+
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
 		SDL_FreeSurface(textSurface);
 		SDL_DestroyTexture(textTexture);
+
+		SDL_RenderCopy(renderer, statValueTexture, NULL, &statValueRect);
+		SDL_FreeSurface(statValueSurface);
+		SDL_DestroyTexture(statValueTexture);
 
 		previousBoxY += 54;
 	}
 }
 
-std::variant<item, int> inventory::thingHovered(int mouseX, int mouseY)
+int inventory::thingHovered(int mouseX, int mouseY)
 {
-	item hoveredItem = getItem(mouseX, mouseY);
-	if (hoveredItem.name != "")
-	{
-		return hoveredItem;
-	}
-
 	// Check if the mouse is over a stat box
 	int previousBoxY = 502; // Adjust this value based on your layout
 	int previousBoxH = 80;  // Adjust this value based on your layout
@@ -294,11 +305,10 @@ std::variant<item, int> inventory::thingHovered(int mouseX, int mouseY)
 		{
 			return i;
 		}
+
 		nPreviousBoxY += 54;
 	}
-
-	// If nothing is hovered, return an empty item
-	return item();
+	return -1;
 }
 
 bool inventory::addItem(item newItem)
@@ -346,8 +356,8 @@ item inventory::getItem(int mouseX, int mouseY)
 			if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
 				mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h && equippedItems.size() > i)
 			{
-				if (i < equippedItems.size()) {
-					std::cout << "Item found!" << equippedItems[i].name << std::endl;
+				if (i < equippedItems.size()) 
+				{
 					return equippedItems[i];
 				}
 			}
