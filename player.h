@@ -22,15 +22,7 @@ public:
 	int defLevel;
 	int hpLevel;
 
-	item equippedHelmet;
-	item equippedChestplate;
-	item equippedLeggings;
-	item equippedBoots;
-	item equippedWeapon;
-	item equippedShield;
-	item equippedAccessory1;
-	item equippedAccessory2;
-	item emptySlot = item();
+	
 
 	inventory playerInventory;
 
@@ -40,6 +32,5 @@ public:
 	void unequipItem(item item);
 	void addLevelPoint(int stat);
 	int getLevelStats(int levelCat);
-	item getEquippedItem(int mouseX, int mouseY);
 };
 

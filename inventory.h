@@ -11,6 +11,7 @@
 class inventory
 {
 	public:
+
 		inventory();
 		~inventory();
 		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font);
@@ -21,6 +22,7 @@ class inventory
 
 		item getItem(int mouseX, int mouseY);
 
+		std::vector<item> equippedItems;
 		std::vector<item> storedItems;
 };
 

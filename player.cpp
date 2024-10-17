@@ -15,8 +15,8 @@ player::player(std::string name)
 
 void player::calculateStats()
 {
-	this->totalAtk = equippedHelmet.atk + equippedChestplate.atk + equippedLeggings.atk + equippedBoots.atk + equippedWeapon.atk + equippedShield.atk + equippedAccessory1.atk + equippedAccessory2.atk + getLevelStats(0);
-	this->totalDef = equippedHelmet.def + equippedChestplate.def + equippedLeggings.def + equippedBoots.def + equippedWeapon.def + equippedShield.def + equippedAccessory1.def + equippedAccessory2.def + getLevelStats(1);
+	this->totalAtk = playerInventory.equippedItems[0].atk + playerInventory.equippedItems[1].atk + playerInventory.equippedItems[2].atk + playerInventory.equippedItems[3].atk + playerInventory.equippedItems[4].atk + playerInventory.equippedItems[5].atk + playerInventory.equippedItems[6].atk + playerInventory.equippedItems[7].atk + getLevelStats(0);
+	this->totalDef = playerInventory.equippedItems[0].def + playerInventory.equippedItems[1].def + playerInventory.equippedItems[2].def + playerInventory.equippedItems[3].def + playerInventory.equippedItems[4].def + playerInventory.equippedItems[5].def + playerInventory.equippedItems[6].def + playerInventory.equippedItems[7].def + getLevelStats(1);
 	this->maxHp = 100 + getLevelStats(2);
 }
 
@@ -25,84 +25,84 @@ void player::equipItem(item item)
 	switch (item.itemType)
 	{
 	case 0:
-		if (equippedHelmet.name == "")
+		if (playerInventory.equippedItems[0].name == "")
 		{
-			equippedHelmet = item;
+			playerInventory.equippedItems[0] = item;
 		}
 		else
 		{
-			unequipItem(equippedHelmet);
-			equippedHelmet = item;
+			unequipItem(playerInventory.equippedItems[0]);
+			playerInventory.equippedItems[0] = item;
 		}
 		break;
 	case 1:
-		if (equippedChestplate.name == "")
+		if (playerInventory.equippedItems[1].name == "")
 		{
-			equippedChestplate = item;
+			playerInventory.equippedItems[1] = item;
 		}
 		else
 		{
-			unequipItem(equippedChestplate);
-			equippedChestplate = item;
+			unequipItem(playerInventory.equippedItems[1]);
+			playerInventory.equippedItems[1] = item;
 		}
 		break;
 	case 2:
-		if (equippedLeggings.name == "")
+		if (playerInventory.equippedItems[2].name == "")
 		{
-			equippedLeggings = item;
+			playerInventory.equippedItems[2] = item;
 		}
 		else
 		{
-			unequipItem(equippedLeggings);
-			equippedLeggings = item;
+			unequipItem(playerInventory.equippedItems[2]);
+			playerInventory.equippedItems[2] = item;
 		}
 		break;
 	case 3:
-		if (equippedBoots.name == "")
+		if (playerInventory.equippedItems[3].name == "")
 		{
-			equippedBoots = item;
+			playerInventory.equippedItems[3] = item;
 		}
 		else
 		{
-			unequipItem(equippedBoots);
-			equippedBoots = item;
+			unequipItem(playerInventory.equippedItems[3]);
+			playerInventory.equippedItems[3] = item;
 		}
 		break;
 	case 4:
-		if (equippedWeapon.name == "")
+		if (playerInventory.equippedItems[4].name == "")
 		{
-			equippedWeapon = item;
+			playerInventory.equippedItems[4] = item;
 		}
 		else
 		{
-			unequipItem(equippedWeapon);
-			equippedWeapon = item;
+			unequipItem(playerInventory.equippedItems[4]);
+			playerInventory.equippedItems[4] = item;
 		}
 		break;
 	case 5:
-		if (equippedShield.name == "")
+		if (playerInventory.equippedItems[5].name == "")
 		{
-			equippedShield = item;
+			playerInventory.equippedItems[5] = item;
 		}
 		else
 		{
-			unequipItem(equippedShield);
-			equippedShield = item;
+			unequipItem(playerInventory.equippedItems[5]);
+			playerInventory.equippedItems[5] = item;
 		}
 		break;
 	case 6:
-		if (equippedAccessory1.name == "")
+		if (playerInventory.equippedItems[6].name == "")
 		{
-			equippedAccessory1 = item;
+			playerInventory.equippedItems[6] = item;
 		} 
-		else if (equippedAccessory2.name == "")
+		else if (playerInventory.equippedItems[7].name == "")
 		{
-			equippedAccessory2 = item;
+			playerInventory.equippedItems[7] = item;
 		}
 		else
 		{
-			unequipItem(equippedAccessory1);
-			equippedAccessory1 = item;
+			unequipItem(playerInventory.equippedItems[6]);
+			playerInventory.equippedItems[6] = item;
 		}
 		break;
 	default:
@@ -118,32 +118,32 @@ void player::unequipItem(item item)
 	switch (item.itemType)
 	{
 	case 0:
-		playerInventory.addItem(equippedHelmet);
-		equippedHelmet = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[0]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	case 1:
-		playerInventory.addItem(equippedChestplate);
-		equippedChestplate = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[1]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	case 2:
-		playerInventory.addItem(equippedLeggings);
-		equippedLeggings = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[2]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	case 3:
-		playerInventory.addItem(equippedBoots);
-		equippedBoots = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[3]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	case 4:
-		playerInventory.addItem(equippedWeapon);
-		equippedWeapon = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[4]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	case 5:
-		playerInventory.addItem(equippedShield);
-		equippedShield = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[5]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	case 6:
-		playerInventory.addItem(equippedAccessory1);
-		equippedAccessory1 = emptySlot;
+		playerInventory.addItem(playerInventory.equippedItems[6]);
+		playerInventory.equippedItems[0] = item;
 		break;
 	default:
 		std::cout << "Item type not recognized!" << std::endl;
@@ -203,48 +203,4 @@ int player::getLevelStats(int levelCat)
 	}
 
 	return levelTotal;
-}
-
-item player::getEquippedItem(int mouseX, int mouseY)
-{
-	// Equipment Boxes
-	int boxSize = 80;
-	int padding = 14;
-	int totalWidth = 3 * boxSize + 2 * padding; // Total width of the equipment grid
-	int startX = (390 - totalWidth) / 2; // Center the grid
-	int startY = 220;
-
-	SDL_Rect equipmentBoxes[8] =
-	{
-		{startX + 1 * (boxSize + padding), startY, boxSize, boxSize}, // Helmet
-		{startX + 0 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Accessory1
-		{startX + 1 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Chestplate
-		{startX + 2 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Accessory2
-		{startX + 0 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Shield
-		{startX + 1 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Leggings
-		{startX + 2 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Weapon
-		{startX + 1 * (boxSize + padding), startY + 3 * (boxSize + padding), boxSize, boxSize}  // Boots
-	};
-
-	item equippedItems[8] = {
-		equippedHelmet,
-		equippedAccessory1,
-		equippedChestplate,
-		equippedAccessory2,
-		equippedShield,
-		equippedLeggings,
-		equippedWeapon,
-		equippedBoots
-	};
-
-	for (int i = 0; i < 8; ++i)
-	{
-		if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
-			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
-		{
-			return equippedItems[i];
-		}
-	}
-
-	return item(); // Return an empty item if no match is found
 }
