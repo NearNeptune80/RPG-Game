@@ -11,6 +11,11 @@ player::player(std::string name)
 	this->totalAtk = 0;
 	this->totalDef = 0;
 	this->gold = 0;
+
+	this->levelPoints = 0;
+	this->atkLevel = 0;
+	this->defLevel = 0;
+	this->hpLevel = 0;
 }
 
 void player::calculateStats()

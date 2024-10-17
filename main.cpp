@@ -48,6 +48,7 @@ int main(int argc, char* args[]) {
 	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	TTF_Font* font = TTF_OpenFont(fontLocation.c_str(), 20);
+	TTF_Font* invInfoFont = TTF_OpenFont(fontLocation.c_str(), 27);
 
 	if (!font)
 	{
@@ -63,6 +64,8 @@ int main(int argc, char* args[]) {
 	bool close = false;
 	int mouseX, mouseY;
 	SDL_Event e;
+
+	player1.levelPoints = 10;
 
 	int num = 0;
 
@@ -118,16 +121,46 @@ int main(int argc, char* args[]) {
 			}
 			else if (e.type == SDL_MOUSEMOTION)
 			{
-				SDL_GetMouseState(&mouseX, &mouseY);
-				player1.playerInventory.getItem(mouseX, mouseY);
+				if (!exitInv)
+				{
+					SDL_GetMouseState(&mouseX, &mouseY);
+					player1.playerInventory.getItem(mouseX, mouseY);
+				}
+				
+			}
+			else if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				if (!exitInv)
+				{
+					SDL_GetMouseState(&mouseX, &mouseY);
+					std::variant<item, int> hoveredThing = player1.playerInventory.thingHovered(mouseX, mouseY);
+					if (std::holds_alternative<int>(hoveredThing))
+					{
+						int hoveredStat = std::get<int>(hoveredThing);
+						player1.addLevelPoint(hoveredStat);
+					}
+				}
+			}
+			else if (e.type == SDL_MOUSEBUTTONUP)
+			{
+				if (!exitInv)
+				{
+					SDL_GetMouseState(&mouseX, &mouseY);
+					player1.playerInventory.getItem(mouseX, mouseY);
+				}
 			}
 		}
 		
 		if (!exitInv)
 		{
-			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font);
+			SDL_GetMouseState(&mouseX, &mouseY);
+			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font, invInfoFont, player1.playerName, player1.level);
 		}
 
+		std::cout << "Player stats: " << std::endl;
+		std::cout << player1.atkLevel << std::endl;
+		std::cout << player1.defLevel << std::endl;
+		std::cout << player1.hpLevel << std::endl;
 		//Update screen
 		SDL_RenderPresent(renderer);
 	}

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <variant>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -14,8 +15,10 @@ class inventory
 
 		inventory();
 		~inventory();
-		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font);
+		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, TTF_Font* invInfoFont, std::string playerName, int playerLvl);
 		void renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, int i, int j);
+		void renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mouseX, int mouseY, int previousBoxY, int previousBoxH);
+		std::variant<item, int> thingHovered(int mouseX, int mouseY);
 
 		bool addItem(item newItem);
 		void removeItem(int index);

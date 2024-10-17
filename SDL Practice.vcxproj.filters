@@ -58,9 +58,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Downloads\earth.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Images\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>

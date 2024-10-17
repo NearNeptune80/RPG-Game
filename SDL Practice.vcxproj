@@ -151,9 +151,6 @@
     <ClInclude Include="tile.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\Downloads\earth.png">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </Image>
     <Image Include="Images\tileset.png" />
   </ItemGroup>
   <ItemGroup>
