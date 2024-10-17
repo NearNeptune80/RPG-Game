@@ -31,7 +31,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 	int startX = (equipmentContainer.w - totalWidth) / 2; // Center the grid
 	int startY = 220;
 
-	SDL_Rect equipmentBoxes[9] = 
+	SDL_Rect equipmentBoxes[8] = 
 	{
 		{startX + 1 * (boxSize + padding), startY, boxSize, boxSize}, // Helmet
 		{startX + 0 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Accessory1
@@ -49,6 +49,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
 		{
 			SDL_SetRenderDrawColor(renderer, 150, 150, 150, 0xFF); // Highlight color
+			renderDescription(renderer, mouseX, mouseY, font, equipmentBoxes[i].x, equipmentBoxes[i].y);
 		}
 		else
 		{
@@ -114,6 +115,49 @@ void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY
 		SDL_RenderCopy(renderer, textTexture, NULL, &descText);
 		SDL_FreeSurface(textSurface);
 		SDL_DestroyTexture(textTexture);
+
+		int offsetY = descText.y + descText.h + 10; // Start below the item name
+		auto renderStat = [&](const std::string& statName, int statValue) {
+			if (statValue != 0)
+			{
+				std::string statText = statName + ": " + std::to_string(statValue);
+				textSurface = TTF_RenderUTF8_Solid(font, statText.c_str(), textColor);
+				textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+				SDL_Rect statRect = {
+					descBox.x + 10, // Left margin
+					offsetY,
+					textSurface->w,
+					textSurface->h
+				};
+
+				SDL_RenderCopy(renderer, textTexture, NULL, &statRect);
+				SDL_FreeSurface(textSurface);
+				SDL_DestroyTexture(textTexture);
+
+				offsetY += statRect.h + 5; // Move down for the next stat
+			}
+		};
+
+		renderStat("Attack", descItem.atk);
+		renderStat("Defense", descItem.def);
+		renderStat("Price", descItem.price);
+		renderStat("Level", descItem.lvl);
+
+		textSurface = TTF_RenderUTF8_Solid(font, descItem.description.c_str(), textColor);
+		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+		SDL_Rect descRect = {
+			descBox.x + 10, // Left margin
+			offsetY,
+			textSurface->w,
+			textSurface->h
+		};
+
+		SDL_RenderCopy(renderer, textTexture, NULL, &descRect);
+		SDL_FreeSurface(textSurface);
+		SDL_DestroyTexture(textTexture);
+
 	}
 }
 
@@ -152,5 +196,6 @@ item inventory::getItem(int mouseX, int mouseY)
 			}
 		}
 	}
+
 	return item();
 }

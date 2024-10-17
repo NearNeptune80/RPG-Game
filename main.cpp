@@ -93,6 +93,12 @@ int main(int argc, char* args[]) {
 					break;
 				case SDLK_e:
 					//Interacting
+					player1.equipItem(itemList[num]);
+					num++;
+					if (num >= itemList.size())
+					{
+						num = 0;
+					}
 					break;
 				case SDLK_q:
 					//Attacking

@@ -204,3 +204,47 @@ int player::getLevelStats(int levelCat)
 
 	return levelTotal;
 }
+
+item player::getEquippedItem(int mouseX, int mouseY)
+{
+	// Equipment Boxes
+	int boxSize = 80;
+	int padding = 14;
+	int totalWidth = 3 * boxSize + 2 * padding; // Total width of the equipment grid
+	int startX = (390 - totalWidth) / 2; // Center the grid
+	int startY = 220;
+
+	SDL_Rect equipmentBoxes[8] =
+	{
+		{startX + 1 * (boxSize + padding), startY, boxSize, boxSize}, // Helmet
+		{startX + 0 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Accessory1
+		{startX + 1 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Chestplate
+		{startX + 2 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Accessory2
+		{startX + 0 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Shield
+		{startX + 1 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Leggings
+		{startX + 2 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Weapon
+		{startX + 1 * (boxSize + padding), startY + 3 * (boxSize + padding), boxSize, boxSize}  // Boots
+	};
+
+	item equippedItems[8] = {
+		equippedHelmet,
+		equippedAccessory1,
+		equippedChestplate,
+		equippedAccessory2,
+		equippedShield,
+		equippedLeggings,
+		equippedWeapon,
+		equippedBoots
+	};
+
+	for (int i = 0; i < 8; ++i)
+	{
+		if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
+			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
+		{
+			return equippedItems[i];
+		}
+	}
+
+	return item(); // Return an empty item if no match is found
+}

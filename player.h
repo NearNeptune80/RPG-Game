@@ -40,5 +40,6 @@ public:
 	void unequipItem(item item);
 	void addLevelPoint(int stat);
 	int getLevelStats(int levelCat);
+	item getEquippedItem(int mouseX, int mouseY);
 };
 
