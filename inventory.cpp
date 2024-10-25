@@ -25,7 +25,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 	SDL_RenderFillRect(renderer, &charaInfoBox);
 
 	SDL_Color nameTextColor = { 255, 255, 255 };
-	SDL_Surface* nameTextSurface = TTF_RenderUTF8_Solid(invInfoFont, playerName.c_str(), nameTextColor);
+	SDL_Surface* nameTextSurface = TTF_RenderText_Blended(invInfoFont, playerName.c_str(), nameTextColor);
 	SDL_Texture* nameTextTexture = SDL_CreateTextureFromSurface(renderer, nameTextSurface);
 
 	SDL_Rect nameText = {
@@ -42,7 +42,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 	std::string levelText = "Level " + std::to_string(playerLvl);
 
 	SDL_Color lvlTextColor = { 255, 255, 255 };
-    SDL_Surface* lvlTextSurface = TTF_RenderUTF8_Solid(invInfoFont, levelText.c_str(), lvlTextColor);
+    SDL_Surface* lvlTextSurface = TTF_RenderText_Blended(invInfoFont, levelText.c_str(), lvlTextColor);
 	SDL_Texture* lvlTextTexture = SDL_CreateTextureFromSurface(renderer, lvlTextSurface);
 
 	SDL_Rect lvlText = {
@@ -81,14 +81,22 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 
 	for (int i = 0; i < 8; ++i)
 	{
+		SDL_Surface* itemImage = IMG_Load(equippedItems[i].imagelocation.c_str());
+		if (itemImage == NULL)
+		{
+			std::cout << "Could not load image! SDL_Error: " << SDL_GetError() << i << std::endl;
+		}
+		SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
+		SDL_Rect itemRect = { equipmentBoxes[i].x, equipmentBoxes[i].y, equipmentBoxes[i].w, equipmentBoxes[i].h };
+
 		if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
 			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
 		{
-			SDL_SetRenderDrawColor(renderer, 150, 150, 150, 0xFF); // Highlight color
+			SDL_SetRenderDrawColor(renderer, 150, 150, 150, 100); // Highlight color
 		}
 		else
 		{
-			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 0xFF); // Normal color
+			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 100); // Normal color
 		}
 		SDL_RenderFillRect(renderer, &equipmentBoxes[i]);
 	}
@@ -98,6 +106,12 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 		for (int j = 126; j <= 690; j += 94)
 		{
 			SDL_Rect inventoryGrid = { i, j, 80, 80 };
+			/*
+			SDL_Surface* itemImage = IMG_Load(storedItems[(j - 126)].imagelocation.c_str());
+			SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
+			SDL_Rect itemRect = { inventoryGrid.x, inventoryGrid.y, inventoryGrid.w, inventoryGrid.h };
+			*/
+
 			if (mouseX >= inventoryGrid.x && mouseX <= inventoryGrid.x + inventoryGrid.w &&
 				mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h)
 			{
@@ -148,8 +162,8 @@ void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY
 
 		if (i > 800)
 		{
-			descBox = { i - 214, j, 200, 200 };
-			descInterior = { i - 204, j + 10, 180, 180 };
+			descBox = { i - 214, j, 200, 300 };
+			descInterior = { i - 204, j + 10, 180, 280 };
 		}
 		else
 		{
@@ -163,12 +177,12 @@ void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY
 		SDL_RenderFillRect(renderer, &descInterior);
 
 		SDL_Color textColor = { 255, 255, 255 };
-		SDL_Surface* textSurface = TTF_RenderUTF8_Solid(font, descItem.name.c_str(), textColor);
+		SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, descItem.name.c_str(), textColor, 170);
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 		
 		SDL_Rect descText = {
-			descBox.x + (descBox.w - textSurface->w) / 2, // Center horizontally
-			descBox.y + 10, // Center vertically
+			descInterior.x + (descInterior.w - textSurface->w) / 2, // Center horizontally
+			descInterior.y + 5, // Center vertically
 			textSurface->w,
 			textSurface->h
 		};
@@ -177,17 +191,17 @@ void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY
 		SDL_FreeSurface(textSurface);
 		SDL_DestroyTexture(textTexture);
 
-		int offsetY = descText.y + descText.h + 10; // Start below the item name
+		int offsetY = descText.y + descText.h + 5; // Start below the item name
 
 		auto renderStat = [&](const std::string& statName, int statValue) {
 			if (statValue != 0)
 			{
 				std::string statText = statName + ": " + std::to_string(statValue);
-				textSurface = TTF_RenderUTF8_Solid(font, statText.c_str(), textColor);
+				textSurface = TTF_RenderText_Blended_Wrapped(font, statText.c_str(), textColor, 170);
 				textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
 				SDL_Rect statRect = {
-					descBox.x + 10, // Left margin
+					descInterior.x + 5, // Left margin
 					offsetY,
 					textSurface->w,
 					textSurface->h
@@ -206,11 +220,11 @@ void inventory::renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY
 		renderStat("Price", descItem.price);
 		renderStat("Level", descItem.lvl);
 
-		textSurface = TTF_RenderUTF8_Solid(font, descItem.description.c_str(), textColor);
+		textSurface = TTF_RenderText_Blended_Wrapped(font, descItem.description.c_str(), textColor, 170);
 		textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
 		SDL_Rect descRect = {
-			descBox.x + 10, // Left margin
+			descInterior.x + 5, // Left margin
 			offsetY,
 			textSurface->w,
 			textSurface->h
@@ -258,16 +272,16 @@ void inventory::renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mou
 	for (int i = 0; i < 3; i++)
 	{
 		SDL_Color textColor = { 255, 255, 255 };
-		SDL_Surface* textSurface = TTF_RenderUTF8_Solid(font, statNames[i].c_str(), textColor);
+		SDL_Surface* textSurface = TTF_RenderText_Blended(font, statNames[i].c_str(), textColor);
 		SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
-		SDL_Surface* statValueSurface = TTF_RenderUTF8_Solid(font, std::to_string(i == 0 ? atkLvl : i == 1 ? defLvl : hpLvl).c_str(), textColor);
+		SDL_Surface* statValueSurface = TTF_RenderText_Blended(font, std::to_string(i == 0 ? atkLvl : i == 1 ? defLvl : hpLvl).c_str(), textColor);
 		SDL_Texture* statValueTexture = SDL_CreateTextureFromSurface(renderer, statValueSurface);
 
 		SDL_Rect textRect = {
 			54, // Center horizontally
 			previousBoxY + 40, // Center vertically
-			textSurface->w + 5,
+			textSurface->w + 10,
 			textSurface->h + 5
 		};
 
