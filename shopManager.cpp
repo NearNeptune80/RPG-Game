@@ -27,6 +27,28 @@ void shopManager::renderShopInventory(SDL_Renderer* renderer, int mouseX, int mo
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 0xFF);
 	SDL_RenderFillRect(renderer, &titleBox);
 	
+	SDL_Color titleTextColour = { 255, 255, 255 };
+	SDL_Surface* titleTextSurface = TTF_RenderText_Blended(font, shopId.c_str(), titleTextColour);
+	SDL_Texture* titleTextTexture = SDL_CreateTextureFromSurface(renderer, titleTextSurface);
+
+	int textWidth = titleTextSurface->w;
+	int textHeight = titleTextSurface->h;
+
+	int scaleFactor = 2;
+	int scaledWidth = textWidth * scaleFactor;
+	int scaledHeight = textHeight * scaleFactor;
+
+	SDL_Rect titleTextRect = {
+		titleBox.x + (titleBox.w - scaledWidth) / 2,
+		titleBox.y + (titleBox.h - scaledHeight) / 2,
+		scaledWidth,
+		scaledHeight
+	};
+	SDL_RenderCopy(renderer, titleTextTexture, NULL, &titleTextRect);
+
+	SDL_FreeSurface(titleTextSurface);
+	SDL_DestroyTexture(titleTextTexture);
+
 	for (int i = 128; i <= 640; i += 128)
 	{
 		SDL_Rect itemContainer = { 1186, i, 400, 114 };

@@ -57,6 +57,7 @@ int main(int argc, char* args[]) {
 
 	TTF_Font* font = TTF_OpenFont(fontLocation.c_str(), 20);
 	TTF_Font* invInfoFont = TTF_OpenFont(fontLocation.c_str(), 27);
+	TTF_Font* shopTitleFont = TTF_OpenFont(fontLocation.c_str(), 27);
 
 	if (!font)
 	{
@@ -162,12 +163,12 @@ int main(int argc, char* args[]) {
 		if (!exitInv)
 		{
 			SDL_GetMouseState(&mouseX, &mouseY);
-			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
+			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, shopTitleFont, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
 		}
 		if (!exitShop)
 		{
 			SDL_GetMouseState(&mouseX, &mouseY);
-			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "shop1");
+			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "First Shop");
 		}
 
 		//Update screen
