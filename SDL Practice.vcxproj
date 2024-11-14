@@ -154,6 +154,12 @@
     <ClInclude Include="tile.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\1.jpg" />
+    <Image Include="Images\2.jpg" />
+    <Image Include="Images\3.png" />
+    <Image Include="Images\4.jpg" />
+    <Image Include="Images\5.png" />
+    <Image Include="Images\6.jpg" />
     <Image Include="Images\tileset.png" />
   </ItemGroup>
   <ItemGroup>
