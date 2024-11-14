@@ -24,6 +24,7 @@
     <ProjectGuid>{53e64ed5-4dd9-4091-a60d-b3337d52128a}</ProjectGuid>
     <RootNamespace>SDLPractice</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>RPG Game</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,6 +141,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="SDL_Funcs.cpp" />
     <ClCompile Include="JSON_Readers.cpp" />
+    <ClCompile Include="shopManager.cpp" />
     <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +150,7 @@
     <ClInclude Include="JSON_Readers.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="SDL_Funcs.h" />
+    <ClInclude Include="shopManager.h" />
     <ClInclude Include="tile.h" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +159,7 @@
   <ItemGroup>
     <None Include="items.json" />
     <None Include="Maps\allMaps.json" />
+    <None Include="Maps\Example Map.json" />
     <None Include="Maps\startArea.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

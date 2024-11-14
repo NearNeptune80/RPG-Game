@@ -2,12 +2,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <cstdlib>
+#include <ctime>
 #include "SDL_Funcs.h"
 #include "tile.h"
 #include "JSON_Readers.h"
 #include "inventory.h"
 #include "item.h"
 #include "player.h"
+#include "shopManager.h"
 
 const int SCREEN_WIDTH = 1600;
 const int SCREEN_HEIGHT = 896;
@@ -22,17 +25,22 @@ SDL_Renderer* renderer = NULL;
 SDL_Surface* tileset = IMG_Load("./Images/tileset.png");
 std::string fontLocation = "./Roboto/Roboto-Black.ttf";
 
+
 int main(int argc, char* args[]) {
 
 	if (!tileset)
 	{
 		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
 	}
-
+	
+	std::srand(time(0));
+	shopManager& shopManager = shopManager::getInstance();
 	
 
     player player1("Jack");
 	std::vector<item> itemList = readItems("./items.json");
+
+	shopManager.randomizeShopInventory("shop1", itemList, 1);
 
 	for (int i = 0; i < itemList.size(); i++)
 	{
@@ -61,6 +69,7 @@ int main(int argc, char* args[]) {
 	std::vector<tile> tiles = createTiles(map);
 	
 	bool exitInv = true;
+	bool exitShop = true;
 	bool close = false;
 	int mouseX, mouseY;
 	SDL_Event e;
@@ -84,6 +93,7 @@ int main(int argc, char* args[]) {
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_w:
+					exitShop = !exitShop;
 					break;
 				case SDLK_s:
 					break;
@@ -153,6 +163,11 @@ int main(int argc, char* args[]) {
 		{
 			SDL_GetMouseState(&mouseX, &mouseY);
 			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, font, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
+		}
+		if (!exitShop)
+		{
+			SDL_GetMouseState(&mouseX, &mouseY);
+			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "shop1");
 		}
 
 		//Update screen
