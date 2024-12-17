@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <variant>
+#include <optional>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -20,6 +21,7 @@ class inventory
 		void renderLvlUpBoxes(SDL_Renderer* renderer, TTF_Font* font, int mouseX, int mouseY, int previousBoxY, int previousBoxH, int atkLvl, int defLvl, int hpLvl);
 		int thingHovered(int mouseX, int mouseY);
 
+		std::optional<item> dragAndDrop(int mouseX, int mouseY, SDL_Renderer* renderer, bool buttonHeld);
 		bool addItem(item newItem);
 		void removeItem(int index);
 

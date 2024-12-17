@@ -69,6 +69,7 @@ int main(int argc, char* args[]) {
 	std::vector<mapData> map = readMapData("./Maps/startArea.json");
 	std::vector<tile> tiles = createTiles(map);
 	
+	bool buttonHeld = false;
 	bool exitInv = true;
 	bool exitShop = true;
 	bool close = false;
@@ -107,12 +108,8 @@ int main(int argc, char* args[]) {
 					break;
 				case SDLK_e:
 					//Interacting
-					player1.equipItem(itemList[num]);
-					num++;
-					if (num >= itemList.size())
-					{
-						num = 0;
-					}
+					player1.equipItem(player1.playerInventory.getItem(mouseX, mouseY));
+					
 					break;
 				case SDLK_q:
 					//Attacking
@@ -132,6 +129,7 @@ int main(int argc, char* args[]) {
 			}
 			else if (e.type == SDL_MOUSEMOTION)
 			{
+				SDL_GetMouseState(&mouseX, &mouseY);
 				if (!exitInv)
 				{
 					SDL_GetMouseState(&mouseX, &mouseY);
@@ -141,9 +139,9 @@ int main(int argc, char* args[]) {
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
+				buttonHeld = true;
 				if (!exitInv)
 				{
-					SDL_GetMouseState(&mouseX, &mouseY);
 					if (player1.playerInventory.thingHovered(mouseX, mouseY) != -1)
 					{
 						player1.addLevelPoint(player1.playerInventory.thingHovered(mouseX, mouseY));
@@ -152,9 +150,14 @@ int main(int argc, char* args[]) {
 			}
 			else if (e.type == SDL_MOUSEBUTTONUP)
 			{
+				buttonHeld = false;
+				auto draggedItem = player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
+				if (draggedItem) {
+					// Handle equipping the item
+					player1.equipItem(*draggedItem);
+				}
 				if (!exitInv)
 				{
-					SDL_GetMouseState(&mouseX, &mouseY);
 					player1.playerInventory.getItem(mouseX, mouseY);
 				}
 			}
@@ -162,15 +165,16 @@ int main(int argc, char* args[]) {
 		
 		if (!exitInv)
 		{
-			SDL_GetMouseState(&mouseX, &mouseY);
 			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, shopTitleFont, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
 		}
 		if (!exitShop)
 		{
-			SDL_GetMouseState(&mouseX, &mouseY);
 			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "First Shop");
 		}
-
+		
+		SDL_GetMouseState(&mouseX, &mouseY);
+		player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
+		
 		//Update screen
 		SDL_RenderPresent(renderer);
 	}

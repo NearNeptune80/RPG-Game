@@ -27,94 +27,26 @@ void player::calculateStats()
 
 void player::equipItem(item item)
 {
-	switch (item.itemType)
+	int slot = item.itemType;
+	if (slot < 0 || slot > 6)
 	{
-	case 0:
-		if (playerInventory.equippedItems[0].name == "")
-		{
-			playerInventory.equippedItems[0] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[0]);
-			playerInventory.equippedItems[0] = item;
-		}
-		break;
-	case 1:
-		if (playerInventory.equippedItems[1].name == "")
-		{
-			playerInventory.equippedItems[1] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[1]);
-			playerInventory.equippedItems[1] = item;
-		}
-		break;
-	case 2:
-		if (playerInventory.equippedItems[2].name == "")
-		{
-			playerInventory.equippedItems[2] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[2]);
-			playerInventory.equippedItems[2] = item;
-		}
-		break;
-	case 3:
-		if (playerInventory.equippedItems[3].name == "")
-		{
-			playerInventory.equippedItems[3] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[3]);
-			playerInventory.equippedItems[3] = item;
-		}
-		break;
-	case 4:
-		if (playerInventory.equippedItems[4].name == "")
-		{
-			playerInventory.equippedItems[4] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[4]);
-			playerInventory.equippedItems[4] = item;
-		}
-		break;
-	case 5:
-		if (playerInventory.equippedItems[5].name == "")
-		{
-			playerInventory.equippedItems[5] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[5]);
-			playerInventory.equippedItems[5] = item;
-		}
-		break;
-	case 6:
-		if (playerInventory.equippedItems[6].name == "")
-		{
-			playerInventory.equippedItems[6] = item;
-		} 
-		else if (playerInventory.equippedItems[7].name == "")
-		{
-			playerInventory.equippedItems[7] = item;
-		}
-		else
-		{
-			unequipItem(playerInventory.equippedItems[6]);
-			playerInventory.equippedItems[6] = item;
-		}
-		break;
-	default:
 		std::cout << "Item type not recognized!" << std::endl;
-		break;
+		return;
 	}
-	
+
+	if (playerInventory.equippedItems[slot].name != "")
+	{
+		unequipItem(playerInventory.equippedItems[slot]);
+	}
+
+	playerInventory.equippedItems[slot] = item;
+
+	// Handle the special case for itemType 6
+	if (slot == 6 && playerInventory.equippedItems[7].name == "")
+	{
+		playerInventory.equippedItems[7] = item;
+	}
+
 	calculateStats();
 }
 

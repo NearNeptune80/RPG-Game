@@ -89,6 +89,13 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 		SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
 		SDL_Rect itemRect = { equipmentBoxes[i].x, equipmentBoxes[i].y, equipmentBoxes[i].w, equipmentBoxes[i].h };
 
+		// Render the item texture
+		SDL_RenderCopy(renderer, itemTexture, NULL, &itemRect);
+
+		// Free the surface and destroy the texture
+		SDL_FreeSurface(itemImage);
+		SDL_DestroyTexture(itemTexture);
+
 		if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
 			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
 		{
@@ -323,6 +330,45 @@ int inventory::thingHovered(int mouseX, int mouseY)
 		nPreviousBoxY += 54;
 	}
 	return -1;
+}
+
+std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer* renderer, bool buttonHeld)
+{
+	static item draggedItem;
+	static bool isDragging = false;
+	static SDL_Texture* itemTexture = nullptr;
+
+	if (buttonHeld && !isDragging)
+	{
+		draggedItem = getItem(mouseX, mouseY);
+		if (draggedItem.name != "")
+		{
+			isDragging = true;
+			SDL_Surface* itemImage = IMG_Load(draggedItem.imagelocation.c_str());
+			if (itemImage == NULL)
+			{
+				std::cout << "Could not load draggedItem image! SDL_Error: " << SDL_GetError() << std::endl;
+			}
+			itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
+			SDL_FreeSurface(itemImage);
+		}
+	}
+	else if (!buttonHeld && isDragging)
+	{
+		isDragging = false;
+		SDL_DestroyTexture(itemTexture);
+		itemTexture = nullptr;
+		return draggedItem; // Return the dragged item when the button is released
+	}
+
+	if (isDragging && itemTexture)
+	{
+		SDL_Rect itemRect = { mouseX - 40, mouseY - 40, 80, 80 };
+		// Render the item texture
+		SDL_RenderCopy(renderer, itemTexture, NULL, &itemRect);
+	}
+
+	return std::nullopt; // Return an empty optional if no item is being dragged
 }
 
 bool inventory::addItem(item newItem)
