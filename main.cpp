@@ -108,8 +108,6 @@ int main(int argc, char* args[]) {
 					break;
 				case SDLK_e:
 					//Interacting
-					player1.equipItem(player1.playerInventory.getItem(mouseX, mouseY));
-					
 					break;
 				case SDLK_q:
 					//Attacking

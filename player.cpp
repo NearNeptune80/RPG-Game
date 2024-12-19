@@ -50,37 +50,39 @@ void player::equipItem(item item)
 	calculateStats();
 }
 
-void player::unequipItem(item item)
+void player::unequipItem(item unequippedItem)
 {
-	switch (item.itemType)
+	item emptyItem = item();
+
+	switch (unequippedItem.itemType)
 	{
 	case 0:
 		playerInventory.addItem(playerInventory.equippedItems[0]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[0] = emptyItem;
 		break;
 	case 1:
 		playerInventory.addItem(playerInventory.equippedItems[1]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[1] = emptyItem;
 		break;
 	case 2:
 		playerInventory.addItem(playerInventory.equippedItems[2]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[2] = emptyItem;
 		break;
 	case 3:
 		playerInventory.addItem(playerInventory.equippedItems[3]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[3] = emptyItem;
 		break;
 	case 4:
 		playerInventory.addItem(playerInventory.equippedItems[4]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[4] = emptyItem;
 		break;
 	case 5:
 		playerInventory.addItem(playerInventory.equippedItems[5]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[5] = emptyItem;
 		break;
 	case 6:
 		playerInventory.addItem(playerInventory.equippedItems[6]);
-		playerInventory.equippedItems[0] = item;
+		playerInventory.equippedItems[6] = emptyItem;
 		break;
 	default:
 		std::cout << "Item type not recognized!" << std::endl;

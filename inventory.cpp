@@ -361,7 +361,7 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 		return draggedItem; // Return the dragged item when the button is released
 	}
 
-	if (isDragging && itemTexture)
+	if (isDragging && itemTexture
 	{
 		SDL_Rect itemRect = { mouseX - 40, mouseY - 40, 80, 80 };
 		// Render the item texture
