@@ -61,31 +61,34 @@ std::vector<mapInfo> readMapIndex(const std::string& filePath) {
     return mapIndexList;
 }
 
-std::vector<item> readItems(const std::string& filePath)
+std::vector<item> readItems(const std::string& filePath, SDL_Renderer* renderer)
 {
-	std::ifstream file(filePath);
+    std::ifstream file(filePath);
     if (!file.is_open())
     {
-		std::cerr << "Failed to open items file: " << filePath << std::endl;
-		return {};
+        std::cerr << "Failed to open items file: " << filePath << std::endl;
+        return {};
     }
 
-	json itemsJson;
-	file >> itemsJson;
+    json itemsJson;
+    file >> itemsJson;
 
-	std::vector<item> itemsList;
+    std::vector<item> itemsList;
     for (const auto& itemData : itemsJson["items"])
     {
-		item newItem;
-		newItem.atk = itemData["atk"];
-		newItem.def = itemData["def"];
-		newItem.price = itemData["price"];
-		newItem.imagelocation = itemData["imageLocation"];
-		newItem.itemType = itemData["itemType"];
-		newItem.description = itemData["description"];
-		newItem.name = itemData["name"];
-		newItem.lvl = itemData["lvl"];
-		itemsList.push_back(newItem);
+        int atk = itemData["atk"];
+        int def = itemData["def"];
+        int price = itemData["price"];
+        std::string imagelocation = itemData["imageLocation"];
+        int itemType = itemData["itemType"];
+        std::string description = itemData["description"];
+        std::string name = itemData["name"];
+        int lvl = itemData["lvl"];
+
+        // Create the item using the parameterized constructor
+        item newItem(atk, def, price, imagelocation, itemType, description, name, lvl, renderer);
+
+        itemsList.push_back(newItem);
     }
     return itemsList;
 }

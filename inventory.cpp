@@ -2,11 +2,11 @@
 
 
 
-inventory::inventory()
+inventory::inventory(SDL_Renderer* renderer)
 {
 	for (int i = 0; i < 8; i++)
 	{
-		equippedItems.push_back(item());
+		equippedItems.push_back(item(0, 0, 0, "", -1, "", "", 0, renderer));
 	}
 }
 
@@ -81,21 +81,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 
 	for (int i = 0; i < 8; ++i)
 	{
-		SDL_Surface* itemImage = IMG_Load(equippedItems[i].imagelocation.c_str());
-		if (itemImage == NULL)
-		{
-			std::cout << "Could not load image! SDL_Error: " << SDL_GetError() << i << std::endl;
-		}
-		SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
-		SDL_Rect itemRect = { equipmentBoxes[i].x, equipmentBoxes[i].y, equipmentBoxes[i].w, equipmentBoxes[i].h };
-
-		// Render the item texture
-		SDL_RenderCopy(renderer, itemTexture, NULL, &itemRect);
-
-		// Free the surface and destroy the texture
-		SDL_FreeSurface(itemImage);
-		SDL_DestroyTexture(itemTexture);
-
+		// Draw the equipment slot background first
 		if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
 			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
 		{
@@ -106,18 +92,38 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 			SDL_SetRenderDrawColor(renderer, 100, 100, 100, 100); // Normal color
 		}
 		SDL_RenderFillRect(renderer, &equipmentBoxes[i]);
+
+		// Render the item image if it exists
+		if (!equippedItems[i].imagelocation.empty())
+		{
+			if (equippedItems[i].texture != NULL)
+			{
+				// Define the destination rectangle for the item image with padding
+				SDL_Rect itemRect = {
+					equipmentBoxes[i].x + 5, // Slight padding inside the slot
+					equipmentBoxes[i].y + 5,
+					equipmentBoxes[i].w - 10, // Adjust width and height for padding
+					equipmentBoxes[i].h - 10
+				};
+
+				// Render the item texture
+				SDL_RenderCopy(renderer, equippedItems[i].texture.get(), NULL, &itemRect);
+			}
+			else
+			{
+				std::cout << "Could not load equipment item image! SDL_Error: " << IMG_GetError() << std::endl;
+			}
+		}
 	}
 
-	for (int i = 1224; i < 1600; i += 94)
+
+	int index = 0;
+
+	for (int j = 126; j <= 690; j += 94) // Rows
 	{
-		for (int j = 126; j <= 690; j += 94)
+		for (int i = 1224; i < 1600; i += 94) // Columns
 		{
 			SDL_Rect inventoryGrid = { i, j, 80, 80 };
-			/*
-			SDL_Surface* itemImage = IMG_Load(storedItems[(j - 126)].imagelocation.c_str());
-			SDL_Texture* itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
-			SDL_Rect itemRect = { inventoryGrid.x, inventoryGrid.y, inventoryGrid.w, inventoryGrid.h };
-			*/
 
 			if (mouseX >= inventoryGrid.x && mouseX <= inventoryGrid.x + inventoryGrid.w &&
 				mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h)
@@ -129,6 +135,22 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
 				SDL_SetRenderDrawColor(renderer, 100, 100, 100, 0xFF); // Normal color
 			}
 			SDL_RenderFillRect(renderer, &inventoryGrid);
+
+			if (index < storedItems.size())
+			{
+				item& currentItem = storedItems[index];
+				if (currentItem.texture)
+				{
+					SDL_Rect itemRect = {
+						inventoryGrid.x + 5,
+						inventoryGrid.y + 5,
+						inventoryGrid.w - 10,
+						inventoryGrid.h - 10
+					};
+					SDL_RenderCopy(renderer, currentItem.texture.get(), NULL, &itemRect);
+				}
+			}
+			index++;
 		}
 	}
 
@@ -336,36 +358,26 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 {
 	static item draggedItem;
 	static bool isDragging = false;
-	static SDL_Texture* itemTexture = nullptr;
 
 	if (buttonHeld && !isDragging)
 	{
 		draggedItem = getItem(mouseX, mouseY);
-		if (draggedItem.name != "")
+		if (draggedItem.texture)
 		{
 			isDragging = true;
-			SDL_Surface* itemImage = IMG_Load(draggedItem.imagelocation.c_str());
-			if (itemImage == NULL)
-			{
-				std::cout << "Could not load draggedItem image! SDL_Error: " << SDL_GetError() << std::endl;
-			}
-			itemTexture = SDL_CreateTextureFromSurface(renderer, itemImage);
-			SDL_FreeSurface(itemImage);
 		}
 	}
 	else if (!buttonHeld && isDragging)
 	{
 		isDragging = false;
-		SDL_DestroyTexture(itemTexture);
-		itemTexture = nullptr;
 		return draggedItem; // Return the dragged item when the button is released
 	}
 
-	if (isDragging && itemTexture
+	if (isDragging && draggedItem.texture)
 	{
 		SDL_Rect itemRect = { mouseX - 40, mouseY - 40, 80, 80 };
 		// Render the item texture
-		SDL_RenderCopy(renderer, itemTexture, NULL, &itemRect);
+		SDL_RenderCopy(renderer, draggedItem.texture.get(), NULL, &itemRect);
 	}
 
 	return std::nullopt; // Return an empty optional if no item is being dragged
@@ -424,18 +436,20 @@ item inventory::getItem(int mouseX, int mouseY)
 		}
 	}
 	else {
-		for (int i = 1224; i < 1600; i += 94)
+		int index = 0;
+
+		for (int j = 126; j <= 690; j += 94)
 		{
-			for (int j = 126; j <= 690; j += 94)
+			for (int i = 1224; i < 1600; i += 94)
 			{
 				SDL_Rect inventoryGrid = { i, j, 80, 80 };
-				int index = (j - 126) / 94 * 4 + (i - 1224) / 94;
 				if (mouseX >= inventoryGrid.x && mouseX <= inventoryGrid.x + inventoryGrid.w &&
-					mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h && storedItems.size() > index)
+					mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h &&
+					index < storedItems.size())
 				{
-					std::cout << "Item found!" << storedItems[(j - 126) / 94 * 4 + (i - 1224) / 94].name << std::endl;
-					return storedItems[(j - 126) / 94 * 4 + (i - 1224) / 94];
+					return storedItems[index];
 				}
+				index++;
 			}
 		}
 	}

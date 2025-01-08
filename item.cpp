@@ -1,23 +1,46 @@
 #include "item.h"
 
-item::item() : atk(0), def(0), price(0), itemType(-1), lvl(0)
+item::item() : atk(0), def(0), price(0), itemType(-1), lvl(0), texture(nullptr)
 {
 }
 
-item::item(int atk, int def, int price, std::string imagelocation, int itemType, std::string description, std::string name, int lvl)
+item::item(int atk, int def, int price, const std::string& imagelocation,
+	int itemType, const std::string& description, const std::string& name,
+	int lvl, SDL_Renderer* renderer)
+	: atk(atk), def(def), price(price), imagelocation(imagelocation),
+	itemType(itemType), description(description), name(name), lvl(lvl)
 {
-	this->atk = atk;
-	this->def = def;
-	this->price = price;
-	this->imagelocation = imagelocation;
-	this->itemType = itemType;
-	this->description = description;
-	this->name = name;
-	this->lvl = lvl;
+	if (!imagelocation.empty())
+	{
+		SDL_Surface* surface = IMG_Load(imagelocation.c_str());
+		if (surface)
+		{
+			SDL_Texture* rawTexture = SDL_CreateTextureFromSurface(renderer, surface);
+			SDL_FreeSurface(surface);
+
+			if (rawTexture)
+			{
+				texture = std::shared_ptr<SDL_Texture>(rawTexture, SDL_DestroyTexture);
+			}
+			else
+			{
+				std::cout << "Could not create texture: " << SDL_GetError() << std::endl;
+			}
+		}
+		else
+		{
+			std::cout << "Could not load image '" << imagelocation << "': " << IMG_GetError() << std::endl;
+		}
+	}
 }
 
 item::~item()
 {
+	if (texture)
+	{
+		//SDL_DestroyTexture(texture);
+		texture = nullptr;
+	}
 }
 
 std::string item::getItemTypeName()

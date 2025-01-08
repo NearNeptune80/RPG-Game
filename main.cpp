@@ -37,8 +37,12 @@ int main(int argc, char* args[]) {
 	shopManager& shopManager = shopManager::getInstance();
 	
 
-    player player1("Jack");
-	std::vector<item> itemList = readItems("./items.json");
+    
+
+	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	player player1("Jack", renderer);
+	std::vector<item> itemList = readItems("./items.json", renderer);
 
 	shopManager.randomizeShopInventory("shop1", itemList, 1);
 
@@ -46,14 +50,12 @@ int main(int argc, char* args[]) {
 	{
 		std::cout << itemList[i].name << std::endl;
 	}
-	
+
 	if (tileset == NULL) {
 		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
 	}
-	
-	std::vector<mapInfo> mapIndex = readMapIndex("./Maps/allMaps.json");
 
-	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+	std::vector<mapInfo> mapIndex = readMapIndex("./Maps/allMaps.json");
 
 	TTF_Font* font = TTF_OpenFont(fontLocation.c_str(), 20);
 	TTF_Font* invInfoFont = TTF_OpenFont(fontLocation.c_str(), 27);

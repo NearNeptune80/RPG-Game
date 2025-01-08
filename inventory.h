@@ -14,7 +14,7 @@ class inventory
 {
 	public:
 
-		inventory();
+		inventory(SDL_Renderer* renderer);
 		~inventory();
 		void renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, TTF_Font* invInfoFont, std::string playerName, int playerLvl, int atkLvl, int defLvl, int hpLvl);
 		void renderDescription(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, int i, int j);

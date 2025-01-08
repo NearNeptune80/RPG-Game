@@ -1,7 +1,8 @@
 #include "player.h"
 
 
-player::player(std::string name)
+player::player(std::string name, SDL_Renderer* renderer)
+	: playerInventory(renderer)
 {
 	this->playerName = name;
 	this->hp = 100;
@@ -16,6 +17,7 @@ player::player(std::string name)
 	this->atkLevel = 0;
 	this->defLevel = 0;
 	this->hpLevel = 0;
+
 }
 
 void player::calculateStats()

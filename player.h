@@ -26,7 +26,7 @@ public:
 
 	inventory playerInventory;
 
-	player(std::string name);
+	player(std::string name, SDL_Renderer* renderer);
 	void calculateStats();
 	void equipItem(item item);
 	void unequipItem(item item);
