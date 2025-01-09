@@ -381,7 +381,7 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 					isDragging = true;
 					sourceSlotType = slotType;
 					sourceIndex = index;
-					// Clear the source slot
+					// Clear the source slot visually
 					storedItems[sourceIndex] = item();
 				}
 			}
@@ -393,7 +393,7 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 					isDragging = true;
 					sourceSlotType = slotType;
 					sourceIndex = index;
-					// Clear the source slot
+					// Clear the source slot visually
 					equippedItems[sourceIndex] = item();
 				}
 			}
@@ -404,50 +404,59 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 		isDragging = false;
 		auto [targetSlotType, targetIndex] = getSlotTypeAndIndex(mouseX, mouseY);
 
+		bool dropSuccess = false;
+
 		if (sourceSlotType == "inventory")
 		{
 			if (targetSlotType == "inventory" && targetIndex < storedItems.size())
 			{
-				// Place the dragged item into the target slot
-				if (storedItems[targetIndex].name.empty())
-				{
-					storedItems[targetIndex] = draggedItem;
-				}
-				else
-				{
-					// Swap items
-					std::swap(storedItems[targetIndex], draggedItem);
-					// Return the dragged item to the source slot
-					storedItems[sourceIndex] = draggedItem;
-				}
+				// Swap items within inventory using explicit assignments
+				item temp = storedItems[targetIndex];
+				storedItems[targetIndex] = draggedItem;
+				storedItems[sourceIndex] = temp;
+				dropSuccess = true;
 			}
 			else if (targetSlotType == "equipment" && targetIndex < equippedItems.size())
 			{
 				if (isValidEquipmentSlot(draggedItem, targetIndex))
 				{
-					// Equip the item
 					if (equippedItems[targetIndex].name.empty())
 					{
+						// Equip the item
 						equippedItems[targetIndex] = draggedItem;
 						equipmentChanged = true;
+						dropSuccess = true;
 					}
 					else
 					{
-						// Swap items
-						std::swap(equippedItems[targetIndex], draggedItem);
-						// Return the dragged item to the source slot
-						storedItems[sourceIndex] = draggedItem;
+						// **Swap Only If Same Type** using explicit assignments
+						if (draggedItem.itemType == equippedItems[targetIndex].itemType)
+						{
+							item temp = equippedItems[targetIndex];
+							equippedItems[targetIndex] = draggedItem;
+							storedItems[sourceIndex] = temp;
+							equipmentChanged = true;
+							dropSuccess = true;
+						}
+						else
+						{
+							// Cannot swap, do nothing
+						}
 					}
 				}
 				else
 				{
-					// Invalid slot, return the item to the source slot
-					storedItems[sourceIndex] = draggedItem;
+					// Invalid slot for this item, do nothing
 				}
 			}
 			else
 			{
-				// Dropped outside valid slots, return item to original slot
+				// Dropped outside valid slots, do nothing
+			}
+
+			if (!dropSuccess)
+			{
+				// Return dragged item to source slot
 				storedItems[sourceIndex] = draggedItem;
 			}
 		}
@@ -455,37 +464,71 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 		{
 			if (targetSlotType == "inventory" && targetIndex < storedItems.size())
 			{
-				// Move item to inventory
 				if (storedItems[targetIndex].name.empty())
 				{
+					// Move item to inventory
 					storedItems[targetIndex] = draggedItem;
 					equipmentChanged = true;
+					dropSuccess = true;
 				}
 				else
 				{
-					// Swap items
-					std::swap(storedItems[targetIndex], draggedItem);
-					// Return the dragged item to the source slot
-					equippedItems[sourceIndex] = draggedItem;
+					// **Swap Only If Same Type** using explicit assignments
+					if (draggedItem.itemType == storedItems[targetIndex].itemType)
+					{
+						item temp = storedItems[targetIndex];
+						storedItems[targetIndex] = draggedItem;
+						equippedItems[sourceIndex] = temp;
+						equipmentChanged = true;
+						dropSuccess = true;
+					}
+					else
+					{
+						// Cannot swap, do nothing
+					}
 				}
 			}
 			else if (targetSlotType == "equipment" && targetIndex < equippedItems.size())
 			{
 				if (isValidEquipmentSlot(draggedItem, targetIndex))
 				{
-					// Swap items
-					std::swap(equippedItems[targetIndex], draggedItem);
-					equipmentChanged = true;
+					if (equippedItems[targetIndex].name.empty())
+					{
+						// Place item into the empty equipment slot
+						equippedItems[targetIndex] = draggedItem;
+						equipmentChanged = true;
+						dropSuccess = true;
+					}
+					else
+					{
+						// **Swap Only If Same Type** using explicit assignments
+						if (draggedItem.itemType == equippedItems[targetIndex].itemType)
+						{
+							item temp = equippedItems[targetIndex];
+							equippedItems[targetIndex] = draggedItem;
+							equippedItems[sourceIndex] = temp;
+							equipmentChanged = true;
+							dropSuccess = true;
+						}
+						else
+						{
+							// Cannot swap, do nothing
+						}
+					}
 				}
 				else
 				{
-					// Invalid slot, return the item to the source slot
-					equippedItems[sourceIndex] = draggedItem;
+					// Invalid slot for this item, do nothing
 				}
 			}
 			else
 			{
-				// Dropped outside valid slots, return item to original slot
+				// Dropped outside valid slots, do nothing
+			}
+
+			if (!dropSuccess)
+			{
+				// Return dragged item to source slot
 				equippedItems[sourceIndex] = draggedItem;
 			}
 		}
@@ -645,4 +688,16 @@ bool inventory::isValidEquipmentSlot(const item& itm, int slotIndex)
 		return true;
 	}
 	return false;
+}
+
+bool inventory::isInventoryFull()
+{
+	for (const auto& itm : storedItems)
+	{
+		if (itm.name.empty())
+		{
+			return false; // Found an empty slot
+		}
+	}
+	return true; // No empty slots found
 }

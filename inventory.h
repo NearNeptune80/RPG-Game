@@ -31,6 +31,8 @@ class inventory
 
 		bool isValidEquipmentSlot(const item& itm, int slotIndex);
 
+		bool isInventoryFull();
+
 		std::vector<item> equippedItems;
 		std::vector<item> storedItems;
 		bool equipmentChanged = false;
