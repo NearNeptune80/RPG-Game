@@ -30,7 +30,7 @@ void player::calculateStats()
 void player::equipItem(item item)
 {
 	int slot = item.itemType;
-	if (slot < 0 || slot > 6)
+	if (slot < 0 || slot > 7)
 	{
 		std::cout << "Item type not recognized!" << std::endl;
 		return;
@@ -54,42 +54,22 @@ void player::equipItem(item item)
 
 void player::unequipItem(item unequippedItem)
 {
-	item emptyItem = item();
-
-	switch (unequippedItem.itemType)
+	int slot = unequippedItem.itemType;
+	if (slot < 0 || slot >= playerInventory.equippedItems.size())
 	{
-	case 0:
-		playerInventory.addItem(playerInventory.equippedItems[0]);
-		playerInventory.equippedItems[0] = emptyItem;
-		break;
-	case 1:
-		playerInventory.addItem(playerInventory.equippedItems[1]);
-		playerInventory.equippedItems[1] = emptyItem;
-		break;
-	case 2:
-		playerInventory.addItem(playerInventory.equippedItems[2]);
-		playerInventory.equippedItems[2] = emptyItem;
-		break;
-	case 3:
-		playerInventory.addItem(playerInventory.equippedItems[3]);
-		playerInventory.equippedItems[3] = emptyItem;
-		break;
-	case 4:
-		playerInventory.addItem(playerInventory.equippedItems[4]);
-		playerInventory.equippedItems[4] = emptyItem;
-		break;
-	case 5:
-		playerInventory.addItem(playerInventory.equippedItems[5]);
-		playerInventory.equippedItems[5] = emptyItem;
-		break;
-	case 6:
-		playerInventory.addItem(playerInventory.equippedItems[6]);
-		playerInventory.equippedItems[6] = emptyItem;
-		break;
-	default:
 		std::cout << "Item type not recognized!" << std::endl;
-		break;
+		return;
 	}
+
+	// Add the unequipped item back to the inventory
+	if (!playerInventory.addItem(playerInventory.equippedItems[slot]))
+	{
+		std::cout << "Failed to add item to inventory. Inventory might be full." << std::endl;
+		return;
+	}
+
+	// Clear the equipment slot
+	playerInventory.equippedItems[slot] = item();
 
 	calculateStats();
 }

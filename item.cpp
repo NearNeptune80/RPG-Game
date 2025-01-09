@@ -10,7 +10,7 @@ item::item(int atk, int def, int price, const std::string& imagelocation,
 	: atk(atk), def(def), price(price), imagelocation(imagelocation),
 	itemType(itemType), description(description), name(name), lvl(lvl)
 {
-	if (!imagelocation.empty())
+	if (renderer && !imagelocation.empty())
 	{
 		SDL_Surface* surface = IMG_Load(imagelocation.c_str());
 		if (surface)
