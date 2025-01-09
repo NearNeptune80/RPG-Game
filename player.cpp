@@ -25,6 +25,9 @@ void player::calculateStats()
 	this->totalAtk = playerInventory.equippedItems[0].atk + playerInventory.equippedItems[1].atk + playerInventory.equippedItems[2].atk + playerInventory.equippedItems[3].atk + playerInventory.equippedItems[4].atk + playerInventory.equippedItems[5].atk + playerInventory.equippedItems[6].atk + playerInventory.equippedItems[7].atk + getLevelStats(0);
 	this->totalDef = playerInventory.equippedItems[0].def + playerInventory.equippedItems[1].def + playerInventory.equippedItems[2].def + playerInventory.equippedItems[3].def + playerInventory.equippedItems[4].def + playerInventory.equippedItems[5].def + playerInventory.equippedItems[6].def + playerInventory.equippedItems[7].def + getLevelStats(1);
 	this->maxHp = 100 + getLevelStats(2);
+	std::cout << "Total attack: " << totalAtk << std::endl;
+	std::cout << "Total defense: " << totalDef << std::endl;
+	std::cout << "Max HP: " << maxHp << std::endl;
 }
 
 void player::equipItem(item item)

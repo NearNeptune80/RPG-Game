@@ -130,39 +130,38 @@ int main(int argc, char* args[]) {
 			else if (e.type == SDL_MOUSEMOTION)
 			{
 				SDL_GetMouseState(&mouseX, &mouseY);
-				if (!exitInv)
-				{
-					SDL_GetMouseState(&mouseX, &mouseY);
-					player1.playerInventory.getItem(mouseX, mouseY);
-				}
-				
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
 				buttonHeld = true;
 				if (!exitInv)
 				{
-					if (player1.playerInventory.thingHovered(mouseX, mouseY) != -1)
+					int hoveredThing = player1.playerInventory.thingHovered(mouseX, mouseY);
+					if (hoveredThing != -1)
 					{
-						player1.addLevelPoint(player1.playerInventory.thingHovered(mouseX, mouseY));
+						player1.addLevelPoint(hoveredThing);
 					}
 				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONUP)
 			{
 				buttonHeld = false;
-				auto draggedItem = player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
-				if (draggedItem) {
-					// Handle equipping the item
-					player1.equipItem(*draggedItem);
-				}
-				if (!exitInv)
-				{
-					player1.playerInventory.getItem(mouseX, mouseY);
-				}
+				player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
 			}
 		}
 		
+		// Update mouse position
+		SDL_GetMouseState(&mouseX, &mouseY);
+
+		
+
+		// Check if equipment has changed and update player stats
+		if (player1.playerInventory.equipmentChanged)
+		{
+			player1.calculateStats();
+			player1.playerInventory.equipmentChanged = false;
+		}
+
 		if (!exitInv)
 		{
 			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, shopTitleFont, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
@@ -171,10 +170,10 @@ int main(int argc, char* args[]) {
 		{
 			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "First Shop");
 		}
-		
-		SDL_GetMouseState(&mouseX, &mouseY);
+
+		// Call dragAndDrop to render the dragged item if any
 		player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
-		
+
 		//Update screen
 		SDL_RenderPresent(renderer);
 	}

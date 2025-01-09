@@ -1,12 +1,19 @@
 #include "inventory.h"
 
-
+const int MAX_INVENTORY_SIZE = 28;
 
 inventory::inventory(SDL_Renderer* renderer)
 {
+	// Initialize equippedItems with default items
 	for (int i = 0; i < 8; i++)
 	{
 		equippedItems.push_back(item(0, 0, 0, "", -1, "", "", 0, renderer));
+	}
+
+	// Initialize storedItems with default items
+	for (int i = 0; i < MAX_INVENTORY_SIZE; i++)
+	{
+		storedItems.push_back(item());
 	}
 }
 
@@ -358,44 +365,161 @@ std::optional<item> inventory::dragAndDrop(int mouseX, int mouseY, SDL_Renderer*
 {
 	static item draggedItem;
 	static bool isDragging = false;
+	static std::string sourceSlotType;
+	static int sourceIndex = -1;
 
 	if (buttonHeld && !isDragging)
 	{
-		draggedItem = getItem(mouseX, mouseY);
-		if (draggedItem.texture)
+		auto [slotType, index] = getSlotTypeAndIndex(mouseX, mouseY);
+		if (!slotType.empty() && index >= 0)
 		{
-			isDragging = true;
+			if (slotType == "inventory" && index < storedItems.size())
+			{
+				if (!storedItems[index].name.empty())
+				{
+					draggedItem = storedItems[index];
+					isDragging = true;
+					sourceSlotType = slotType;
+					sourceIndex = index;
+					// Clear the source slot
+					storedItems[sourceIndex] = item();
+				}
+			}
+			else if (slotType == "equipment" && index < equippedItems.size())
+			{
+				if (!equippedItems[index].name.empty())
+				{
+					draggedItem = equippedItems[index];
+					isDragging = true;
+					sourceSlotType = slotType;
+					sourceIndex = index;
+					// Clear the source slot
+					equippedItems[sourceIndex] = item();
+				}
+			}
 		}
 	}
 	else if (!buttonHeld && isDragging)
 	{
 		isDragging = false;
-		return draggedItem; // Return the dragged item when the button is released
+		auto [targetSlotType, targetIndex] = getSlotTypeAndIndex(mouseX, mouseY);
+
+		if (sourceSlotType == "inventory")
+		{
+			if (targetSlotType == "inventory" && targetIndex < storedItems.size())
+			{
+				// Place the dragged item into the target slot
+				if (storedItems[targetIndex].name.empty())
+				{
+					storedItems[targetIndex] = draggedItem;
+				}
+				else
+				{
+					// Swap items
+					std::swap(storedItems[targetIndex], draggedItem);
+					// Return the dragged item to the source slot
+					storedItems[sourceIndex] = draggedItem;
+				}
+			}
+			else if (targetSlotType == "equipment" && targetIndex < equippedItems.size())
+			{
+				if (isValidEquipmentSlot(draggedItem, targetIndex))
+				{
+					// Equip the item
+					if (equippedItems[targetIndex].name.empty())
+					{
+						equippedItems[targetIndex] = draggedItem;
+						equipmentChanged = true;
+					}
+					else
+					{
+						// Swap items
+						std::swap(equippedItems[targetIndex], draggedItem);
+						// Return the dragged item to the source slot
+						storedItems[sourceIndex] = draggedItem;
+					}
+				}
+				else
+				{
+					// Invalid slot, return the item to the source slot
+					storedItems[sourceIndex] = draggedItem;
+				}
+			}
+			else
+			{
+				// Dropped outside valid slots, return item to original slot
+				storedItems[sourceIndex] = draggedItem;
+			}
+		}
+		else if (sourceSlotType == "equipment")
+		{
+			if (targetSlotType == "inventory" && targetIndex < storedItems.size())
+			{
+				// Move item to inventory
+				if (storedItems[targetIndex].name.empty())
+				{
+					storedItems[targetIndex] = draggedItem;
+					equipmentChanged = true;
+				}
+				else
+				{
+					// Swap items
+					std::swap(storedItems[targetIndex], draggedItem);
+					// Return the dragged item to the source slot
+					equippedItems[sourceIndex] = draggedItem;
+				}
+			}
+			else if (targetSlotType == "equipment" && targetIndex < equippedItems.size())
+			{
+				if (isValidEquipmentSlot(draggedItem, targetIndex))
+				{
+					// Swap items
+					std::swap(equippedItems[targetIndex], draggedItem);
+					equipmentChanged = true;
+				}
+				else
+				{
+					// Invalid slot, return the item to the source slot
+					equippedItems[sourceIndex] = draggedItem;
+				}
+			}
+			else
+			{
+				// Dropped outside valid slots, return item to original slot
+				equippedItems[sourceIndex] = draggedItem;
+			}
+		}
+
+		// Clear draggedItem
+		draggedItem = item();
+		sourceSlotType.clear();
+		sourceIndex = -1;
 	}
 
+	// Render the dragged item if any
 	if (isDragging && draggedItem.texture)
 	{
 		SDL_Rect itemRect = { mouseX - 40, mouseY - 40, 80, 80 };
-		// Render the item texture
 		SDL_RenderCopy(renderer, draggedItem.texture.get(), NULL, &itemRect);
 	}
 
-	return std::nullopt; // Return an empty optional if no item is being dragged
+	return std::nullopt;
 }
 
-bool inventory::addItem(item newItem)
+
+bool inventory::addItem(const item& newItem)
 {
-	if (storedItems.size() < 28)
+	for (auto& itm : storedItems)
 	{
-		storedItems.push_back(newItem);
-		return true;
+		if (itm.name.empty())
+		{
+			itm = newItem;
+			return true;
+		}
 	}
-	else
-	{
-		std::cout << "Inventory is full!" << std::endl;
-		return false;
-	}
-}
+	std::cout << "Inventory is full!" << std::endl;
+	return false;
+}   
 
 void inventory::removeItem(int index)
 {
@@ -456,4 +580,69 @@ item inventory::getItem(int mouseX, int mouseY)
 	
 
 	return item();
+}
+
+std::pair<std::string, int> inventory::getSlotTypeAndIndex(int mouseX, int mouseY)
+{
+	// Equipment slots
+	int boxSize = 80;
+	int padding = 14;
+	int totalWidth = 3 * boxSize + 2 * padding; // Total width of the equipment grid
+	int startX = (390 - totalWidth) / 2;        // Center the grid
+	int startY = 220;
+
+	SDL_Rect equipmentBoxes[8] =
+	{
+		{startX + 1 * (boxSize + padding), startY, boxSize, boxSize},                       // Helmet (0)
+		{startX + 1 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Chestplate (1)
+		{startX + 1 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Leggings (2)
+		{startX + 1 * (boxSize + padding), startY + 3 * (boxSize + padding), boxSize, boxSize}, // Boots (3)
+		{startX + 2 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Weapon (4)
+		{startX + 0 * (boxSize + padding), startY + 2 * (boxSize + padding), boxSize, boxSize}, // Shield (5)
+		{startX + 0 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}, // Accessory1 (6)
+		{startX + 2 * (boxSize + padding), startY + 1 * (boxSize + padding), boxSize, boxSize}  // Accessory2 (7)
+	};
+
+	for (int i = 0; i < 8; ++i)
+	{
+		if (mouseX >= equipmentBoxes[i].x && mouseX <= equipmentBoxes[i].x + equipmentBoxes[i].w &&
+			mouseY >= equipmentBoxes[i].y && mouseY <= equipmentBoxes[i].y + equipmentBoxes[i].h)
+		{
+			return { "equipment", i };
+		}
+	}
+
+	// Inventory slots
+	int index = 0;
+	for (int j = 126; j <= 690; j += 94)
+	{
+		for (int i = 1224; i < 1600; i += 94)
+		{
+			SDL_Rect inventoryGrid = { i, j, 80, 80 };
+			if (mouseX >= inventoryGrid.x && mouseX <= inventoryGrid.x + inventoryGrid.w &&
+				mouseY >= inventoryGrid.y && mouseY <= inventoryGrid.y + inventoryGrid.h)
+			{
+				return { "inventory", index };
+			}
+			index++;
+		}
+	}
+
+	return { "", -1 }; // Not over any slot
+}
+
+// inventory.cpp
+
+bool inventory::isValidEquipmentSlot(const item& itm, int slotIndex)
+{
+	if (itm.itemType == slotIndex)
+	{
+		return true;
+	}
+	// Handle accessory slots (e.g., slot indices 6 and 7 for accessories)
+	if (itm.itemType == 6 && (slotIndex == 6 || slotIndex == 7))
+	{
+		return true;
+	}
+	return false;
 }

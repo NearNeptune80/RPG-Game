@@ -22,12 +22,17 @@ class inventory
 		int thingHovered(int mouseX, int mouseY);
 
 		std::optional<item> dragAndDrop(int mouseX, int mouseY, SDL_Renderer* renderer, bool buttonHeld);
-		bool addItem(item newItem);
+		bool addItem(const item& newItem);
 		void removeItem(int index);
 
 		item getItem(int mouseX, int mouseY);
 
+		std::pair<std::string, int> getSlotTypeAndIndex(int mouseX, int mouseY);
+
+		bool isValidEquipmentSlot(const item& itm, int slotIndex);
+
 		std::vector<item> equippedItems;
 		std::vector<item> storedItems;
+		bool equipmentChanged = false;
 };
 
