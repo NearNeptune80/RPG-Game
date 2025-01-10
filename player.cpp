@@ -39,19 +39,26 @@ void player::equipItem(item item)
 		return;
 	}
 
-	if (playerInventory.equippedItems[slot].name != "")
+	if (item.lvl > level)
 	{
-		unequipItem(playerInventory.equippedItems[slot]);
+		std::cout << "Item level is too high!" << std::endl;
 	}
-
-	playerInventory.equippedItems[slot] = item;
-
-	// Handle the special case for itemType 6
-	if (slot == 6 && playerInventory.equippedItems[7].name == "")
+	else
 	{
-		playerInventory.equippedItems[7] = item;
-	}
+		if (playerInventory.equippedItems[slot].name != "")
+		{
+			unequipItem(playerInventory.equippedItems[slot]);
+		}
 
+		playerInventory.equippedItems[slot] = item;
+
+		// Handle the special case for itemType 6
+		if (slot == 6 && playerInventory.equippedItems[7].name == "")
+		{
+			playerInventory.equippedItems[7] = item;
+		}
+	}
+	
 	calculateStats();
 }
 
@@ -104,6 +111,7 @@ void player::addLevelPoint(int stat)
 	{
 		std::cout << "No level points available!" << std::endl;
 	}
+	calculateStats();
 }
 
 int player::getLevelStats(int levelCat)

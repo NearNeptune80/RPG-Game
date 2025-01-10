@@ -33,11 +33,8 @@ int main(int argc, char* args[]) {
 		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
 	}
 	
-	std::srand(time(0));
+	std::srand(static_cast<unsigned int>(time(0)));
 	shopManager& shopManager = shopManager::getInstance();
-	
-
-    
 
 	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 

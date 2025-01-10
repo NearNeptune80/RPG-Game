@@ -54,8 +54,8 @@ std::vector<SDL_Texture*> loadTileTextures(SDL_Renderer* renderer, SDL_Surface* 
 void renderTiles(SDL_Renderer* renderer, const std::vector<tile>& tiles, const std::vector<SDL_Texture*>& tileTextures, int mapWidth, const int TILE_WIDTH, const int TILE_HEIGHT) {
 	for (size_t i = 0; i < tiles.size(); ++i) {
 		int tileType = tiles[i].tileType;
-		int x = (i % mapWidth) * TILE_WIDTH;
-		int y = (i / mapWidth) * TILE_HEIGHT;
+		int x = (static_cast<int>(i) % mapWidth) * TILE_WIDTH;
+		int y = (static_cast<int>(i) / mapWidth) * TILE_HEIGHT;
 
 		SDL_Rect destRect;
 		destRect.x = x;

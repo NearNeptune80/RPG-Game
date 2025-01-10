@@ -6,6 +6,7 @@
 bool init(SDL_Window* &window, SDL_Surface* &screenSurface, SDL_Renderer* &renderer, const int SCREEN_WIDTH, const int SCREEN_HEIGHT) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+		return false;
 	}
 	else {
 		window = SDL_CreateWindow("This is a new window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -25,7 +26,7 @@ bool init(SDL_Window* &window, SDL_Surface* &screenSurface, SDL_Renderer* &rende
 				SDL_UpdateWindowSurface(window);
 				if (TTF_Init() == -1) {
 					std::cout << "SDL_ttf could not initialize! TTF_Error: " << TTF_GetError() << std::endl;
-					return -1;
+					return false;
 				}
 				return true;
 			}
