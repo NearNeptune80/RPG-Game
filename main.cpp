@@ -143,7 +143,7 @@ int main(int argc, char* args[]) {
 			else if (e.type == SDL_MOUSEBUTTONUP)
 			{
 				buttonHeld = false;
-				player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
+				
 			}
 		}
 		
@@ -169,7 +169,7 @@ int main(int argc, char* args[]) {
 		}
 
 		// Call dragAndDrop to render the dragged item if any
-		player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld);
+		player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld, player1.level);
 
 		//Update screen
 		SDL_RenderPresent(renderer);
