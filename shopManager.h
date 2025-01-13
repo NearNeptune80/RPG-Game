@@ -13,6 +13,8 @@ public:
 
     void randomizeShopInventory(const std::string& shopId, std::vector<item> itemList, int playerLvl);
     const std::vector<item>& getShopInventory(const std::string& shopId);
+    item purchaseItem(item selectedItem, int& playerMoney, const std::string& shopId);
+    item getHoveredItem(int mouseX, int mouseY, const std::string& shopId);
     void renderShopInventory(SDL_Renderer* renderer, int mouseX, int mouseY, TTF_Font* font, const std::string& shopId);
 
 private:

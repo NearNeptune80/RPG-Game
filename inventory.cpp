@@ -91,7 +91,7 @@ void inventory::renderInventory(SDL_Renderer* renderer, int mouseX, int mouseY, 
         for (int i = 1224; i < 1600; i += 94)
         {
             SDL_Rect inventoryGrid = { i, j, 80, 80 };
-            bool isHovered = (mouseX >= i && mouseX <= i + 80 && mouseY >= j && mouseY <= j + 80);
+            bool isHovered = (mouseX >= i && mouseX < i + 80 && mouseY >= j && mouseY < j + 80);
             SDL_SetRenderDrawColor(renderer, isHovered ? 150 : 100, 100, 100, 0xFF);
             SDL_RenderFillRect(renderer, &inventoryGrid);
 
@@ -482,7 +482,7 @@ std::pair<std::string, int> inventory::getSlotTypeAndIndex(int mouseX, int mouse
             if (currentIndex >= 8) break;
             int x = startX + i * (boxSize + padding);
             int y = startY + row * (boxSize + padding);
-            if (mouseX >= x && mouseX <= x + boxSize && mouseY >= y && mouseY <= y + boxSize)
+            if (mouseX >= x && mouseX < x + boxSize && mouseY >= y && mouseY < y + boxSize)
             {
                 return { "equipment", currentIndex };
             }
@@ -491,7 +491,7 @@ std::pair<std::string, int> inventory::getSlotTypeAndIndex(int mouseX, int mouse
     }
 
     // Inventory Slots
-    if (mouseX >= 1210 && mouseX <= 1210 + 390 &&
+    if (mouseX >= 1210 && mouseX < 1210 + 390 &&
         mouseY >= 112 && mouseY <= 112 + 672)
     {
         int relativeX = mouseX - 1210;
@@ -501,6 +501,7 @@ std::pair<std::string, int> inventory::getSlotTypeAndIndex(int mouseX, int mouse
         int index = row * 4 + col;
         if (col < 4 && row < 7 && index < storedItems.size())
         {
+			std::cout << "Inventory slot " << index << " clicked." << std::endl;
             return { "inventory", index };
         }
     }

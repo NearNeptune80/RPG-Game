@@ -22,8 +22,6 @@ public:
 	int defLevel;
 	int hpLevel;
 
-	
-
 	inventory playerInventory;
 
 	player(std::string name, SDL_Renderer* renderer);

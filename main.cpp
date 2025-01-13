@@ -39,6 +39,7 @@ int main(int argc, char* args[]) {
 	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	player player1("Jack", renderer);
+	player1.gold = 100;
 	std::vector<item> itemList = readItems("./items.json", renderer);
 
 	shopManager.randomizeShopInventory("shop1", itemList, 1);
@@ -73,6 +74,7 @@ int main(int argc, char* args[]) {
 	bool exitShop = true;
 	bool close = false;
 	int mouseX, mouseY;
+	SDL_GetMouseState(&mouseX, &mouseY);
 	SDL_Event e;
 
 	player1.levelPoints = 10;
@@ -94,7 +96,10 @@ int main(int argc, char* args[]) {
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_w:
-					exitShop = !exitShop;
+					if (exitInv)
+					{
+						exitShop = !exitShop;
+					}
 					break;
 				case SDLK_s:
 					break;
@@ -103,21 +108,22 @@ int main(int argc, char* args[]) {
 				case SDLK_d:
 					break;
 				case SDLK_TAB:
-					exitInv = !exitInv;
+					if (exitShop)
+					{
+						exitInv = !exitInv;
+					}
 					break;
 				case SDLK_e:
 					//Interacting
 					break;
 				case SDLK_q:
 					//Attacking
-
 					player1.playerInventory.addItem(itemList[num]);
 					num++;
 					if (num >= itemList.size())
 					{
 						num = 0;
 					}
-
 					break;
 				case SDLK_SPACE:
 					//Blocking
@@ -130,6 +136,7 @@ int main(int argc, char* args[]) {
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
+
 				buttonHeld = true;
 				if (!exitInv)
 				{
@@ -139,18 +146,24 @@ int main(int argc, char* args[]) {
 						player1.addLevelPoint(hoveredThing);
 					}
 				}
+				if (!exitShop)
+				{
+					item selectedItem = shopManager.getHoveredItem(mouseX, mouseY, "shop1");
+					if (!selectedItem.name.empty())
+					{
+						item purchasedItem = shopManager.purchaseItem(selectedItem, player1.gold, "shop1");
+						if (!purchasedItem.name.empty())
+						{
+							player1.playerInventory.addItem(selectedItem);
+						}
+					}
+				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONUP)
 			{
 				buttonHeld = false;
-				
 			}
 		}
-		
-		// Update mouse position
-		SDL_GetMouseState(&mouseX, &mouseY);
-
-		
 
 		// Check if equipment has changed and update player stats
 		if (player1.playerInventory.equipmentChanged)
@@ -159,17 +172,19 @@ int main(int argc, char* args[]) {
 			player1.playerInventory.equipmentChanged = false;
 		}
 
-		if (!exitInv)
+		if (!exitInv && exitShop)
 		{
 			player1.playerInventory.renderInventory(renderer, mouseX, mouseY, shopTitleFont, invInfoFont, player1.playerName, player1.level, player1.atkLevel, player1.defLevel, player1.hpLevel);
+			
+			// Call dragAndDrop to render the dragged item if any
+			player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld, player1.level);
 		}
-		if (!exitShop)
+		if (!exitShop && exitInv)
 		{
-			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "First Shop");
+			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "shop1");
 		}
 
-		// Call dragAndDrop to render the dragged item if any
-		player1.playerInventory.dragAndDrop(mouseX, mouseY, renderer, buttonHeld, player1.level);
+		
 
 		//Update screen
 		SDL_RenderPresent(renderer);
