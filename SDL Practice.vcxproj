@@ -142,7 +142,6 @@
     <ClCompile Include="SDL_Funcs.cpp" />
     <ClCompile Include="JSON_Readers.cpp" />
     <ClCompile Include="shopManager.cpp" />
-    <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inventory.h" />
@@ -151,7 +150,6 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="SDL_Funcs.h" />
     <ClInclude Include="shopManager.h" />
-    <ClInclude Include="tile.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\1.jpg" />

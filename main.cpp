@@ -5,7 +5,6 @@
 #include <cstdlib>
 #include <ctime>
 #include "SDL_Funcs.h"
-#include "tile.h"
 #include "JSON_Readers.h"
 #include "inventory.h"
 #include "item.h"
@@ -64,10 +63,7 @@ int main(int argc, char* args[]) {
 		std::cout << "Font could not be loaded! SDL_Error: " << TTF_GetError() << std::endl;
 	}
 
-	std::vector<SDL_Texture*> tileTextures = loadTileTextures(renderer, tileset, TILESET_ROWS, TILESET_COLUMNS, TILE_WIDTH, TILE_HEIGHT);
-
 	std::vector<mapData> map = readMapData("./Maps/startArea.json");
-	std::vector<tile> tiles = createTiles(map);
 	
 	bool buttonHeld = false;
 	bool exitInv = true;
