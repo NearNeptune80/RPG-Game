@@ -4,126 +4,378 @@
       "name": "background",
       "layout": [
         [
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          }
         ],
         [
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 3, "solid": 0, "trigger": 1, "triggerData": "Test Shop"},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": true
+          }
+        ]
+      ]
+    },
+    {
+      "name": "decorations",
+      "layout": [
+        [
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 2, "solid": 0, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          }
+        ]
+      ]
+    },
+    {
+      "name": "foreground",
+      "layout": [
+        [
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          }
         ],
         [
-	  {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1},
-          {"tileType": 1, "solid": 1, "trigger": -1}
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          }
+        ],
+        [
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          }
+        ],
+        [
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          }
+        ],
+        [
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          },
+          {
+            "textures": [ 3 ],
+            "solid": false
+          },
+          {
+            "textures": [ 2 ],
+            "solid": false
+          }
         ]
       ]
     }
+  ],
+  "tileset": {
+    "image": "./Images/tileset.png",
+    "tileWidth": 32,
+    "tileHeight": 32,
+    "columns": 10,
+    "rows": 2
+  },
+  "triggers": [
+    {
+      "type": "shop",
+      "position": {
+        "x": 2,
+        "y": 2
+      },
+      "data": "Shop1"
+    },
+    {
+      "type": "transport",
+      "position": {
+        "x": 4,
+        "y": 4
+      },
+      "data": {
+        "destinationMap": "forestArea",
+        "destinationCoordinates": {
+          "x": 10,
+          "y": 15
+        }
+      }
+    }
   ]
 }
+

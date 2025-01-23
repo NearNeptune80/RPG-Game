@@ -501,7 +501,6 @@ std::pair<std::string, int> inventory::getSlotTypeAndIndex(int mouseX, int mouse
         int index = row * 4 + col;
         if (col < 4 && row < 7 && index < storedItems.size())
         {
-			std::cout << "Inventory slot " << index << " clicked." << std::endl;
             return { "inventory", index };
         }
     }

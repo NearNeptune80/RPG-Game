@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -135,21 +135,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="layer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="SDL_Funcs.cpp" />
     <ClCompile Include="JSON_Readers.cpp" />
     <ClCompile Include="shopManager.cpp" />
+    <ClCompile Include="tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.h" />
     <ClInclude Include="inventory.h" />
     <ClInclude Include="item.h" />
     <ClInclude Include="JSON_Readers.h" />
+    <ClInclude Include="layer.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="SDL_Funcs.h" />
     <ClInclude Include="shopManager.h" />
+    <ClInclude Include="tile.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\1.jpg" />
@@ -158,6 +166,7 @@
     <Image Include="Images\4.jpg" />
     <Image Include="Images\5.png" />
     <Image Include="Images\6.jpg" />
+    <Image Include="Images\playerTextureMap.png" />
     <Image Include="Images\tileset.png" />
   </ItemGroup>
   <ItemGroup>

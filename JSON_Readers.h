@@ -3,20 +3,8 @@
 #include <vector>
 #include <string>
 #include "item.h"
+#include "map.h"
 
-struct mapInfo {
-	int mapId;
-	std::string mapName;
-	std::string filePath;
-};
-
-struct mapData {
-	int tileType;
-	bool solid;
-	int trigger;
-	std::string triggerData;
-};
-
-std::vector<mapData> readMapData(const std::string& filePath);
-std::vector<mapInfo>readMapIndex(const std::string& filePath);
+map createMap(std::string mapLocation, std::vector<SDL_Texture*> tileTextures);
 std::vector<item> readItems(const std::string& filePath, SDL_Renderer* renderer);
+std::vector<SDL_Texture*> loadTileTextures(SDL_Renderer* renderer, SDL_Surface* tilesetSurface, int columns, int rows, int tileWidth, int tileHeight);

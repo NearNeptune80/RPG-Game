@@ -10,6 +10,8 @@
 #include "item.h"
 #include "player.h"
 #include "shopManager.h"
+#include "map.h"
+#include "camera.h"
 
 const int SCREEN_WIDTH = 1600;
 const int SCREEN_HEIGHT = 896;
@@ -27,19 +29,24 @@ std::string fontLocation = "./Roboto/Roboto-Black.ttf";
 
 int main(int argc, char* args[]) {
 
-	if (!tileset)
-	{
-		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
-	}
 	
 	std::srand(static_cast<unsigned int>(time(0)));
 	shopManager& shopManager = shopManager::getInstance();
 
 	init(window, screenSurface, renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+	std::vector<SDL_Texture*> tileTextures = loadTileTextures(renderer, tileset, TILESET_COLUMNS, TILESET_ROWS, TILE_WIDTH, TILE_HEIGHT);
+
 	player player1("Jack", renderer);
 	player1.gold = 100;
 	std::vector<item> itemList = readItems("./items.json", renderer);
+	map startArea = createMap("./Maps/startArea.json", tileTextures);
+
+	// Check if the map was loaded successfully
+	if (startArea.layers.empty()) {
+		std::cerr << "Failed to load the start area map." << std::endl;
+		return -1;
+	}
 
 	shopManager.randomizeShopInventory("shop1", itemList, 1);
 
@@ -47,12 +54,6 @@ int main(int argc, char* args[]) {
 	{
 		std::cout << itemList[i].name << std::endl;
 	}
-
-	if (tileset == NULL) {
-		std::cout << "Tileset could not be loaded! SDL_Error: " << SDL_GetError() << std::endl;
-	}
-
-	std::vector<mapInfo> mapIndex = readMapIndex("./Maps/allMaps.json");
 
 	TTF_Font* font = TTF_OpenFont(fontLocation.c_str(), 20);
 	TTF_Font* invInfoFont = TTF_OpenFont(fontLocation.c_str(), 27);
@@ -62,8 +63,6 @@ int main(int argc, char* args[]) {
 	{
 		std::cout << "Font could not be loaded! SDL_Error: " << TTF_GetError() << std::endl;
 	}
-
-	std::vector<mapData> map = readMapData("./Maps/startArea.json");
 	
 	bool buttonHeld = false;
 	bool exitInv = true;
@@ -76,6 +75,17 @@ int main(int argc, char* args[]) {
 	player1.levelPoints = 10;
 
 	int num = 0;
+
+	// Initialize Camera
+	camera camera(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	// Assuming map dimensions are set after all layers are added
+	int mapWidth = startArea.mapWidth;
+	int mapHeight = startArea.mapHeight;
+
+	int frame = 0;
+	int direction = 1; // Default direction (down)
+	Uint32 lastFrameTime = SDL_GetTicks();
 
 	while (!close) {
 
@@ -92,16 +102,20 @@ int main(int argc, char* args[]) {
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_w:
-					if (exitInv)
-					{
-						exitShop = !exitShop;
-					}
+					direction = 0;
+					player1.move(renderer, direction, frame);
 					break;
 				case SDLK_s:
+					direction = 1;
+					player1.move(renderer, direction, frame);
 					break;
 				case SDLK_a:
+					direction = 2;
+					player1.move(renderer, direction, frame);
 					break;
 				case SDLK_d:
+					direction = 3;
+					player1.move(renderer, direction, frame);
 					break;
 				case SDLK_TAB:
 					if (exitShop)
@@ -111,6 +125,10 @@ int main(int argc, char* args[]) {
 					break;
 				case SDLK_e:
 					//Interacting
+					if (exitInv)
+					{
+						exitShop = !exitShop;
+					}
 					break;
 				case SDLK_q:
 					//Attacking
@@ -161,6 +179,19 @@ int main(int argc, char* args[]) {
 			}
 		}
 
+		// Update camera based on player position
+		// Assuming player has x and y attributes representing position in pixels
+		camera.update(player1.x, player1.y, mapWidth, mapHeight);
+
+		// Clear the screen
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(renderer);
+
+		// Render the map with camera
+		startArea.render(renderer, camera);
+
+		player1.renderPlayer(renderer, direction, frame);
+
 		// Check if equipment has changed and update player stats
 		if (player1.playerInventory.equipmentChanged)
 		{
@@ -179,8 +210,6 @@ int main(int argc, char* args[]) {
 		{
 			shopManager.renderShopInventory(renderer, mouseX, mouseY, font, "shop1");
 		}
-
-		
 
 		//Update screen
 		SDL_RenderPresent(renderer);

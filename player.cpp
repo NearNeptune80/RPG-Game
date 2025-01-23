@@ -18,6 +18,39 @@ player::player(std::string name, SDL_Renderer* renderer)
 	this->defLevel = 0;
 	this->hpLevel = 0;
 
+	this->x = 0;
+	this->y = 0;
+
+	this->playerTextureMap = IMG_LoadTexture(renderer, textureMap.c_str());
+
+}
+
+void player::move(SDL_Renderer* renderer, int direction, int frame)
+{
+	/*
+	0 = up
+	1 = down
+	2 = left
+	3 = right
+	*/
+	switch (direction)
+	{
+	case 0:
+		y -= 5;
+		break;
+	case 1:
+		y += 5;
+		break;
+	case 2:
+		x -= 5;
+		break;
+	case 3:
+		x += 5;
+		break;
+	default:
+		std::cout << "Direction not recognized!" << std::endl;
+		break;
+	}
 }
 
 void player::calculateStats()
@@ -135,4 +168,27 @@ int player::getLevelStats(int levelCat)
 	}
 
 	return levelTotal;
+}
+
+void player::renderPlayer(SDL_Renderer* renderer, int direction, int frame)
+{
+	/*
+	0 = up
+	1 = down
+	2 = left
+	3 = right
+	*/
+
+	// Calculate the source rectangle based on the direction and frame
+	SDL_Rect srcRect;
+	srcRect.x = frame * FRAME_WIDTH;
+	srcRect.y = direction * FRAME_HEIGHT;
+	srcRect.w = FRAME_WIDTH;
+	srcRect.h = FRAME_HEIGHT;
+
+	// Destination rectangle where the player will be rendered
+	SDL_Rect destRect = { x - FRAME_WIDTH / 2, y - FRAME_HEIGHT / 2, FRAME_WIDTH, FRAME_HEIGHT };
+
+	// Render the player texture
+	SDL_RenderCopy(renderer, playerTextureMap, &srcRect, &destRect);
 }
