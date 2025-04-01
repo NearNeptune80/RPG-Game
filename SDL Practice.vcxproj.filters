@@ -85,24 +85,6 @@
     <Image Include="Images\tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Images\6.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Images\1.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Images\2.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Images\3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Images\4.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Images\5.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Images\playerTextureMap.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -111,13 +93,13 @@
     <None Include="Maps\allMaps.json">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Maps\startArea.json">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="items.json">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Maps\Example Map.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Maps\startArea.json">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include "inventory.h"
 #include "item.h"
+#include "camera.h"
 
 class player
 {
@@ -23,8 +24,8 @@ public:
 	int defLevel;
 	int hpLevel;
 
-	int x;
-	int y;
+	float x;
+	float y;
 
 	inventory playerInventory;
 
@@ -36,13 +37,13 @@ public:
 	const int FRAME_HEIGHT = 48;
 	const int FRAMES_PER_DIRECTION = 4;
 
-	void move(SDL_Renderer* renderer, int direction, int frame);
+	void move(SDL_Renderer* renderer, int direction, int frame, float deltaTime, int mapWidth, int mapHeight);
 
 	void calculateStats();
 	void equipItem(item item);
 	void unequipItem(item item);
 	void addLevelPoint(int stat);
 	int getLevelStats(int levelCat);
-	void renderPlayer(SDL_Renderer* renderer, int direction, int frame);
+	void renderPlayer(SDL_Renderer* renderer, int direction, int frame, const camera& cam, int mapWidth, int mapHeight);
 };
 

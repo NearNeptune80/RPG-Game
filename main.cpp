@@ -86,8 +86,15 @@ int main(int argc, char* args[]) {
 	int frame = 0;
 	int direction = 1; // Default direction (down)
 	Uint32 lastFrameTime = SDL_GetTicks();
+	
+	std::cout << "Map Width: " << startArea.mapWidth << std::endl;
+	std::cout << "Map Height: " << startArea.mapHeight << std::endl;
 
 	while (!close) {
+
+		Uint32 currentFrameTime = SDL_GetTicks();
+		float deltaTime = (currentFrameTime - lastFrameTime) / 1000.0f;
+		lastFrameTime = currentFrameTime;
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(renderer);
@@ -101,22 +108,6 @@ int main(int argc, char* args[]) {
 			{
 				switch (e.key.keysym.sym)
 				{
-				case SDLK_w:
-					direction = 0;
-					player1.move(renderer, direction, frame);
-					break;
-				case SDLK_s:
-					direction = 1;
-					player1.move(renderer, direction, frame);
-					break;
-				case SDLK_a:
-					direction = 2;
-					player1.move(renderer, direction, frame);
-					break;
-				case SDLK_d:
-					direction = 3;
-					player1.move(renderer, direction, frame);
-					break;
 				case SDLK_TAB:
 					if (exitShop)
 					{
@@ -179,6 +170,25 @@ int main(int argc, char* args[]) {
 			}
 		}
 
+		// Handle player movement
+		const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+		if (currentKeyStates[SDL_SCANCODE_W]) {
+			direction = 0;
+			player1.move(renderer, direction, frame, deltaTime, mapWidth, mapHeight);
+		}
+		if (currentKeyStates[SDL_SCANCODE_S]) {
+			direction = 1;
+			player1.move(renderer, direction, frame, deltaTime, mapWidth, mapHeight);
+		}
+		if (currentKeyStates[SDL_SCANCODE_A]) {
+			direction = 2;
+			player1.move(renderer, direction, frame, deltaTime, mapWidth, mapHeight);
+		}
+		if (currentKeyStates[SDL_SCANCODE_D]) {
+			direction = 3;
+			player1.move(renderer, direction, frame, deltaTime, mapWidth, mapHeight);
+		}
+
 		// Update camera based on player position
 		// Assuming player has x and y attributes representing position in pixels
 		camera.update(player1.x, player1.y, mapWidth, mapHeight);
@@ -190,7 +200,7 @@ int main(int argc, char* args[]) {
 		// Render the map with camera
 		startArea.render(renderer, camera);
 
-		player1.renderPlayer(renderer, direction, frame);
+		player1.renderPlayer(renderer, direction, frame, camera, mapWidth, mapHeight);
 
 		// Check if equipment has changed and update player stats
 		if (player1.playerInventory.equipmentChanged)

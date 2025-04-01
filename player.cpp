@@ -25,7 +25,7 @@ player::player(std::string name, SDL_Renderer* renderer)
 
 }
 
-void player::move(SDL_Renderer* renderer, int direction, int frame)
+void player::move(SDL_Renderer* renderer, int direction, int frame, float deltaTime, int mapHeight, int mapWidth)
 {
 	/*
 	0 = up
@@ -33,24 +33,47 @@ void player::move(SDL_Renderer* renderer, int direction, int frame)
 	2 = left
 	3 = right
 	*/
+
+	float speed = 300.0f; // Speed in pixels per second
 	switch (direction)
 	{
 	case 0:
-		y -= 5;
+		y -= speed * deltaTime;
+		if (y < 0)
+		{
+			y = 0;
+			std::cout << "Player reached the top of the map!" << std::endl;
+		}
 		break;
 	case 1:
-		y += 5;
+		y += speed * deltaTime;
+		if (y + FRAME_HEIGHT > mapHeight) 
+		{
+			y = mapHeight - FRAME_HEIGHT;
+			std::cout << "Player reached the bottom of the map!" << std::endl;
+		}
 		break;
 	case 2:
-		x -= 5;
+		x -= speed * deltaTime;
+		if (x < 0)
+		{
+			x = 0;
+			std::cout << "Player reached the left side of the map!" << std::endl;
+		}
 		break;
 	case 3:
-		x += 5;
+		x += speed * deltaTime;
+		if (x + FRAME_WIDTH > mapWidth)
+		{
+			x = mapWidth - FRAME_WIDTH;
+			std::cout << "Player reached the right side of the map!" << std::endl;
+		}
 		break;
 	default:
 		std::cout << "Direction not recognized!" << std::endl;
 		break;
 	}
+	std::cout << "Player position: (" << x << ", " << y << ")" << std::endl;
 }
 
 void player::calculateStats()
@@ -170,7 +193,7 @@ int player::getLevelStats(int levelCat)
 	return levelTotal;
 }
 
-void player::renderPlayer(SDL_Renderer* renderer, int direction, int frame)
+void player::renderPlayer(SDL_Renderer* renderer, int direction, int frame, const camera& cam, int mapWidth, int mapHeight)
 {
 	/*
 	0 = up
@@ -186,8 +209,17 @@ void player::renderPlayer(SDL_Renderer* renderer, int direction, int frame)
 	srcRect.w = FRAME_WIDTH;
 	srcRect.h = FRAME_HEIGHT;
 
-	// Destination rectangle where the player will be rendered
-	SDL_Rect destRect = { x - FRAME_WIDTH / 2, y - FRAME_HEIGHT / 2, FRAME_WIDTH, FRAME_HEIGHT };
+	// Calculate the destination rectangle for rendering
+	int renderX = static_cast<int>(x) - cam.x;
+	int renderY = static_cast<int>(y) - cam.y;
+
+	// Ensure the player is rendered within the camera view
+	if (renderX < 0) renderX = 0;
+	if (renderY < 0) renderY = 0;
+	if (renderX + FRAME_WIDTH > cam.width) renderX = cam.width - FRAME_WIDTH;
+	if (renderY + FRAME_HEIGHT > cam.height) renderY = cam.height - FRAME_HEIGHT;
+
+	SDL_Rect destRect = { renderX, renderY, FRAME_WIDTH, FRAME_HEIGHT };
 
 	// Render the player texture
 	SDL_RenderCopy(renderer, playerTextureMap, &srcRect, &destRect);

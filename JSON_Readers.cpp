@@ -99,6 +99,12 @@ map createMap(std::string mapLocation, std::vector<SDL_Texture*> tileTextures)
         newMap.addLayer(newLayer);
     }
 
+    if (!newMap.layers.empty())
+    {
+        newMap.mapWidth = newMap.layers[0].layerWidth * newMap.TILE_SIZE;
+        newMap.mapHeight = newMap.layers[0].layerHeight * newMap.TILE_SIZE;
+    }
+
     return newMap;
 }
 
